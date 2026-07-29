@@ -1,0 +1,14 @@
+[project]
+name = "revenue-leakage-agent-mock"
+version = "0.1.0"
+description = "Stateful LangGraph revenue leakage demo with deterministic financial tools"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.7,<3",
+  "langgraph>=0.2",
+  "streamlit>=1.32",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
