@@ -255,15 +255,6 @@ weight = 8.16 kg for an adult -- a decimal slip of 81.6. A plausibility bound (3
 
 weight = 1800 in a kilogram field -- pounds in a kg field, or a typo. Rejected by the same plausibility bound. S-011 never dosed, so no dose assessment is blocked; this is a data quality finding only.
 
-### A11 ambiguous date format — S-006
-
-- **File:** `visits.json`
-- **Records:** VR-0053
-- **Expected verdict:** `not_assessable`
-- **Expected routing:** raise_site_query
-
-visit_date written '05/06/2025' (true value 2025-06-16). SITE-02 uses DD/MM/YYYY, but the file carries no locale declaration and both readings are real dates. Picking a locale and proceeding is how a confident wrong answer gets produced.
-
 ### A11 ambiguous date format — S-008
 
 - **File:** `visits.json`
@@ -271,7 +262,16 @@ visit_date written '05/06/2025' (true value 2025-06-16). SITE-02 uses DD/MM/YYYY
 - **Expected verdict:** `not_assessable`
 - **Expected routing:** raise_site_query
 
-visit_date written '11/12/2025' (true value 2025-09-29). SITE-02 uses DD/MM/YYYY, but the file carries no locale declaration and both readings are real dates. Picking a locale and proceeding is how a confident wrong answer gets produced.
+visit_date written '01/10/2025' (true value 2025-09-29). SITE-02 uses DD/MM/YYYY, but the file carries no locale declaration and both readings are real dates. Read DD/MM it is 2025-10-01, INSIDE the 2025-09-22-2025-10-06 window; read MM/DD it is 2025-01-10, outside it. The two readings give opposite verdicts, so picking a locale and proceeding is exactly how a confident wrong answer gets produced.
+
+### A11 ambiguous date format — S-005
+
+- **File:** `visits.json`
+- **Records:** VR-0047
+- **Expected verdict:** `not_assessable`
+- **Expected routing:** raise_site_query
+
+visit_date written '01/09/2025' (true value 2025-09-01). SITE-02 uses DD/MM/YYYY, but the file carries no locale declaration and both readings are real dates. Read DD/MM it is 2025-09-01, INSIDE the 2025-08-25-2025-09-08 window; read MM/DD it is 2025-01-09, outside it. The two readings give opposite verdicts, so picking a locale and proceeding is exactly how a confident wrong answer gets produced.
 
 ### A2 sentinel in a computed field — S-013
 

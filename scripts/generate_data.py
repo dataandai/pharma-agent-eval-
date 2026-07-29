@@ -978,21 +978,60 @@ class LayerA:
 
     # -- A11: date format ambiguity, SITE-02 only ---------------------------
     def ambiguous_dates(self):
-        # Both readings are valid calendar dates and they land on opposite
-        # sides of the window, so no locale guess is safe.
-        for subject_id, visit_id, written in [("S-006", "V4", "05/06/2025"),
-                                              ("S-008", "V5", "11/12/2025")]:
+        # For the ambiguity to actually matter, the two readings must land on
+        # OPPOSITE sides of the window. If both fall outside it, the verdict is
+        # decidable without resolving the ambiguity and the record tests
+        # nothing. Search for a date where the DD/MM reading is inside the
+        # window and the MM/DD reading is not, rather than hand-picking one.
+        planted = 0
+        for subject_id, visit_id in [("S-006", "V4"), ("S-008", "V5"), ("S-005", "V5"),
+                                     ("S-010", "V4"), ("S-008", "V4"), ("S-006", "V5")]:
+            if planted >= 2:
+                break
+            found = self._straddling_ambiguous_date(subject_id, visit_id)
+            if found is None:
+                continue
+            true_date, swapped, opens, closes = found
             record = self.find_visit(subject_id, visit_id)
             original = record["visit_date"]
+            written = f"{true_date.day:02d}/{true_date.month:02d}/{true_date.year}"
             record["visit_date"] = written
             self.unassessable.add(record["visit_record_id"])
+            planted += 1
             plant(layer="A", code="A11 ambiguous date format", file="visits.json",
                   records=[record["visit_record_id"]], subject=subject_id,
                   verdict="not_assessable", routing="raise_site_query",
                   note=f"visit_date written '{written}' (true value {original}). SITE-02 uses "
                        f"DD/MM/YYYY, but the file carries no locale declaration and both "
-                       f"readings are real dates. Picking a locale and proceeding is how a "
+                       f"readings are real dates. Read DD/MM it is "
+                       f"{true_date.isoformat()}, INSIDE the "
+                       f"{opens.isoformat()}-{closes.isoformat()} window; read MM/DD it is "
+                       f"{swapped.isoformat()}, outside it. The two readings give opposite "
+                       f"verdicts, so picking a locale and proceeding is exactly how a "
                        f"confident wrong answer gets produced.")
+
+    def _straddling_ambiguous_date(self, subject_id, visit_id):
+        """Find a day in the visit window whose day/month swap lands outside it."""
+        row = [r for r in ROSTER if r["subject_id"] == subject_id][0]
+        anchor = date.fromisoformat(row["anchor"])
+        entry = [v for v in schedule_for(row["version"]) if v["visit_id"] == visit_id][0]
+        target = target_date(anchor, entry["target_day"])
+        opens = target - timedelta(days=entry["window_before"])
+        closes = target + timedelta(days=entry["window_after"])
+
+        day = opens
+        while day <= closes:
+            # Both components must be <= 12 or only one reading is valid and
+            # there is no ambiguity to test.
+            if day.day <= 12 and day.month <= 12:
+                try:
+                    swapped = date(day.year, day.day, day.month)
+                except ValueError:
+                    swapped = None
+                if swapped and swapped != day and not (opens <= swapped <= closes):
+                    return day, swapped, opens, closes
+            day += timedelta(days=1)
+        return None
 
     def run(self):
         self.partial_dates()

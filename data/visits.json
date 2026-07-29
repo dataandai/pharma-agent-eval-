@@ -729,7 +729,7 @@
     "site_id": "SITE-02",
     "visit_id": "V5",
     "visit_label": "Week 24",
-    "visit_date": "2025-09-01",
+    "visit_date": "01/09/2025",
     "assessments_done": [
       "labs",
       "vitals",
@@ -823,7 +823,7 @@
     "site_id": "SITE-02",
     "visit_id": "V4",
     "visit_label": "Week 12",
-    "visit_date": "05/06/2025",
+    "visit_date": "2025-06-16",
     "assessments_done": [
       "labs",
       "vitals",
@@ -949,7 +949,7 @@
     "site_id": "SITE-02",
     "visit_id": "V5",
     "visit_label": "Week 24",
-    "visit_date": "11/12/2025",
+    "visit_date": "01/10/2025",
     "assessments_done": [
       "labs",
       "vitals",
