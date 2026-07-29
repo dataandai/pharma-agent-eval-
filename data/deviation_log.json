@@ -1,0 +1,15 @@
+[
+  {
+    "deviation_id": "DEV-0001",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "deviation_date": "2025-05-04",
+    "category": "visit_out_of_window",
+    "description": "Week 8 visit performed 6 days after the protocol-specified target day against a +/-3 day window.",
+    "classification": "not important",
+    "classified_by": "Dr A. Kovacs (Principal Investigator)",
+    "logged_date": "2025-05-13",
+    "capa_required": false
+  }
+]

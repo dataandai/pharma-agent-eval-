@@ -1,0 +1,252 @@
+[
+  {
+    "protocol_id": "PROTO-001",
+    "title": "A Phase 2, open-label study of weight-based dosing in advanced solid tumours",
+    "phase": 2,
+    "design": "open-label",
+    "dosing": {
+      "rule": "mg_per_kg",
+      "value": "5",
+      "unit": "mg/kg",
+      "route": "IV",
+      "frequency": "every 4 weeks",
+      "total_doses": 8,
+      "treatment_period_weeks": 32,
+      "hold_criteria": [
+        "ANC < 0.5 x10^9/L",
+        "Platelets < 50 x10^9/L",
+        "Grade 4 non-haematological toxicity"
+      ]
+    },
+    "eligibility": {
+      "inclusion": [
+        "Age >= 18 years at screening",
+        "Histologically confirmed advanced solid tumour",
+        "ECOG performance status 0-1",
+        "Adequate haematological function (ANC >= 1.5 x10^9/L)"
+      ],
+      "exclusion": [
+        "Active CNS metastases",
+        "Prior treatment with a study-class agent",
+        "Uncontrolled intercurrent illness"
+      ]
+    },
+    "version": "1.0",
+    "effective_date": "2025-01-15",
+    "amends": null,
+    "visit_schedule": [
+      {
+        "visit_id": "SCR",
+        "label": "Screening",
+        "target_day": null,
+        "window_before": null,
+        "window_after": null,
+        "screening_window": {
+          "earliest_day": -28,
+          "latest_day": -1
+        },
+        "required_assessments": [
+          "labs",
+          "eligibility"
+        ]
+      },
+      {
+        "visit_id": "V1",
+        "label": "Day 1",
+        "target_day": 1,
+        "window_before": 0,
+        "window_after": 0,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V2",
+        "label": "Week 4",
+        "target_day": 29,
+        "window_before": 3,
+        "window_after": 3,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V3",
+        "label": "Week 8",
+        "target_day": 57,
+        "window_before": 3,
+        "window_after": 3,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V4",
+        "label": "Week 12",
+        "target_day": 85,
+        "window_before": 3,
+        "window_after": 3,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V5",
+        "label": "Week 24",
+        "target_day": 169,
+        "window_before": 7,
+        "window_after": 7,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V6",
+        "label": "End of Treatment",
+        "target_day": 225,
+        "window_before": 14,
+        "window_after": 14,
+        "required_assessments": [
+          "labs",
+          "vitals"
+        ]
+      }
+    ]
+  },
+  {
+    "protocol_id": "PROTO-001",
+    "title": "A Phase 2, open-label study of weight-based dosing in advanced solid tumours",
+    "phase": 2,
+    "design": "open-label",
+    "dosing": {
+      "rule": "mg_per_kg",
+      "value": "5",
+      "unit": "mg/kg",
+      "route": "IV",
+      "frequency": "every 4 weeks",
+      "total_doses": 8,
+      "treatment_period_weeks": 32,
+      "hold_criteria": [
+        "ANC < 0.5 x10^9/L",
+        "Platelets < 50 x10^9/L",
+        "Grade 4 non-haematological toxicity"
+      ]
+    },
+    "eligibility": {
+      "inclusion": [
+        "Age >= 18 years at screening",
+        "Histologically confirmed advanced solid tumour",
+        "ECOG performance status 0-1",
+        "Adequate haematological function (ANC >= 1.5 x10^9/L)"
+      ],
+      "exclusion": [
+        "Active CNS metastases",
+        "Prior treatment with a study-class agent",
+        "Uncontrolled intercurrent illness"
+      ]
+    },
+    "version": "2.0",
+    "effective_date": "2025-07-01",
+    "amends": "1.0",
+    "amendment_summary": "Week 4 visit window widened from +/-3 to +/-5 days; 12-lead ECG added as a required assessment at Week 12.",
+    "visit_schedule": [
+      {
+        "visit_id": "SCR",
+        "label": "Screening",
+        "target_day": null,
+        "window_before": null,
+        "window_after": null,
+        "screening_window": {
+          "earliest_day": -28,
+          "latest_day": -1
+        },
+        "required_assessments": [
+          "labs",
+          "eligibility"
+        ]
+      },
+      {
+        "visit_id": "V1",
+        "label": "Day 1",
+        "target_day": 1,
+        "window_before": 0,
+        "window_after": 0,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V2",
+        "label": "Week 4",
+        "target_day": 29,
+        "window_before": 5,
+        "window_after": 5,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V3",
+        "label": "Week 8",
+        "target_day": 57,
+        "window_before": 3,
+        "window_after": 3,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V4",
+        "label": "Week 12",
+        "target_day": 85,
+        "window_before": 3,
+        "window_after": 3,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose",
+          "ecg"
+        ]
+      },
+      {
+        "visit_id": "V5",
+        "label": "Week 24",
+        "target_day": 169,
+        "window_before": 7,
+        "window_after": 7,
+        "required_assessments": [
+          "labs",
+          "vitals",
+          "dose"
+        ]
+      },
+      {
+        "visit_id": "V6",
+        "label": "End of Treatment",
+        "target_day": 225,
+        "window_before": 14,
+        "window_after": 14,
+        "required_assessments": [
+          "labs",
+          "vitals"
+        ]
+      }
+    ]
+  }
+]

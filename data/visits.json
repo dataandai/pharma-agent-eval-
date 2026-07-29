@@ -1,0 +1,1605 @@
+[
+  {
+    "visit_record_id": "VR-0001",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-02-03",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025",
+    "comment": "N/A"
+  },
+  {
+    "visit_record_id": "VR-0002",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-02-17",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-02-20",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0003",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-03-17",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-19",
+    "comment": "Patient arrived late due to transport, visit completed same day"
+  },
+  {
+    "visit_record_id": "VR-0004",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-05-12",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-14",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0005",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-08-04",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-06",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0006",
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-09-29",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-05",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0007",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-02-17",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-02-17",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0008",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-03-03",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0009",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-03-31",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-03",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0010",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-05-04",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-09",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0011",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-05-26",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-01",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0012",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-08-18",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-21",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0013",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-10-13",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-16",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0014",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-07-07",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-11",
+    "comment": "site delay - staff shortage"
+  },
+  {
+    "visit_record_id": "VR-0015",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-07-21",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0016",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-08-18",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0017",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-09-15",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-21",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0018",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-10-13",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-17",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0019",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2026-01-05",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2026",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0020",
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2026-03-02",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-03-08",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0021",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-06-23",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-24",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0022",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-07-07",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-UN",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0023",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-08-08",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-10",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0024",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-09-01",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-05",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0025",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-09-29",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-29",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0026",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-12-22",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-12-25",
+    "comment": "beteg nem jelent meg"
+  },
+  {
+    "visit_record_id": "VR-0027",
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2026-02-16",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-02-19",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0028",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-07-14",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-19",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0029",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-07-28",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-02",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0030",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-08-29",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-31",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0031",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-09-22",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0032",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-10-20",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose",
+      "ecg"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0033",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2026-01-12",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-01-12",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0034",
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2026-03-09",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-03-14",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0035",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-02-10",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-02-14",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0036",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-02-24",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-02-25",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0037",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-03-24",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-27",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0038",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-04-21",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-25",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0039",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-05-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-23",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0040",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-08-11",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-15",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0041",
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-10-06",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-10",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0042",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-03-03",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-07",
+    "comment": "see source"
+  },
+  {
+    "visit_record_id": "VR-0043",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-03-17",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-20",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0044",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-04-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-24",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0045",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-05-12",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-17",
+    "comment": "beteg nem jelent meg"
+  },
+  {
+    "visit_record_id": "VR-0046",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-06-09",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-10",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0047",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-09-01",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-06",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0048",
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-10-27",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-31",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0049",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-03-11",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-14",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0050",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-03-24",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-03-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0051",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-04-25",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-29",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0052",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-05-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-22",
+    "comment": "NA"
+  },
+  {
+    "visit_record_id": "VR-0053",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "05/06/2025",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-18",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0054",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-09-08",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-08",
+    "comment": "Windwo missed by a few days, PI informed"
+  },
+  {
+    "visit_record_id": "VR-0055",
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-11-03",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-11-04",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0056",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-03-31",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-03",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0057",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-04-14",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-18",
+    "comment": "Rescheduled at participant request"
+  },
+  {
+    "visit_record_id": "VR-0058",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-05-17",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-19",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0059",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-06-09",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-13",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0060",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-07-07",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-12",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0061",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "11/12/2025",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-30",
+    "comment": "n/a"
+  },
+  {
+    "visit_record_id": "VR-0062",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-11-24",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-11-29",
+    "comment": -999
+  },
+  {
+    "visit_record_id": "VR-0063",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-04-14",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-20",
+    "comment": -999
+  },
+  {
+    "visit_record_id": "VR-0064",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-04-28",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-04-29",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0065",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-05-30",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-04",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0066",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-06-23",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-24",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0067",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-07-21",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0069",
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-12-08",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-12-08",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0070",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-05-05",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-11",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0071",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-05-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-23",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0072",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-06-16",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-17",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0073",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-07-14",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-16",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0074",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-08-11",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-14",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0075",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-11-03",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-11-05",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0076",
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-12-29",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-01-01",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0077",
+    "subject_id": "007",
+    "site_id": "SITE-03",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-03-24",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-05-01",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0078",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-04-07",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-03",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0079",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-05-05",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0080",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-06-02",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-06",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0081",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-06",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-16",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0082",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-25",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0083",
+    "subject_id": "S007",
+    "site_id": "SITE-03",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2025-11-17",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-02-07",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0084",
+    "subject_id": "S-011",
+    "site_id": "SITE-03",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-05",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-22",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0085",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-07-21",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-02",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0086",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-08-04",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-23",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0087",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-09-01",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-16",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0088",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-09-29",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-11-22",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0089",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-10-27",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose",
+      "ecg"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-11-28",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0090",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2026-01-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-03-05",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0091",
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2026-03-16",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-05-26",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0092",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "SCR",
+    "visit_label": "Screening",
+    "visit_date": "2025-05-19",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-08-11",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0093",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V1",
+    "visit_label": "Day 1",
+    "visit_date": "2025-06-02",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-07-20",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0094",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-06",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0095",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-07-28",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-UN",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0096",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V4",
+    "visit_label": "Week 12",
+    "visit_date": "2025-10",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-12-03",
+    "comment": -999
+  },
+  {
+    "visit_record_id": "VR-0097",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-11-UN",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-12-21",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0098",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V6",
+    "visit_label": "End of Treatment",
+    "visit_date": "2026-01-12",
+    "assessments_done": [
+      "labs",
+      "vitals"
+    ],
+    "status": "Completed",
+    "entered_date": "2026-03-18",
+    "comment": null
+  },
+  {
+    "visit_record_id": "VR-0099",
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-06-10",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-06-27",
+    "comment": "Corrected entry"
+  },
+  {
+    "visit_record_id": "VR-0100",
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "visit_id": "V3",
+    "visit_label": "Week 8",
+    "visit_date": "2025-07-29",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-10-UN",
+    "comment": "Corrected entry"
+  },
+  {
+    "visit_record_id": "VR-0101",
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "visit_id": "V5",
+    "visit_label": "Week 24",
+    "visit_date": "2025-08-19",
+    "assessments_done": [
+      "labs",
+      "vitals",
+      "dose"
+    ],
+    "status": "Completed",
+    "entered_date": "2025-09-04",
+    "comment": "Corrected entry"
+  },
+  {
+    "visit_record_id": "VR-0102",
+    "subject_id": "",
+    "site_id": "SITE-03",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-09-16",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025",
+    "comment": "see source"
+  },
+  {
+    "visit_record_id": "VR-0103",
+    "subject_id": "S-099",
+    "site_id": "SITE-03",
+    "visit_id": "V2",
+    "visit_label": "Week 4",
+    "visit_date": "2025-09-23",
+    "assessments_done": [
+      "labs",
+      "eligibility"
+    ],
+    "status": "Completed",
+    "entered_date": "2025",
+    "comment": null
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "subject_id": "S-001",
+    "site_id": "SITE-01",
+    "consent_date": "2025-02-10",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-02-17",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-02-16"
+  },
+  {
+    "subject_id": "S-002",
+    "site_id": "SITE-01",
+    "consent_date": "2025-02-20",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-03-03",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-02-23"
+  },
+  {
+    "subject_id": "S-003",
+    "site_id": "SITE-01",
+    "consent_date": "2025-07-14",
+    "protocol_version_consented": "2.0",
+    "anchor_date": "2025-07-21",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-07-19"
+  },
+  {
+    "subject_id": "S-004",
+    "site_id": "SITE-01",
+    "consent_date": "2025-06-20",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-07-07",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-06-23"
+  },
+  {
+    "subject_id": "S-009",
+    "site_id": "SITE-01",
+    "consent_date": "2025-07-10",
+    "protocol_version_consented": "2.0",
+    "anchor_date": "2025-07-28",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-07-13"
+  },
+  {
+    "subject_id": "S-015",
+    "site_id": "SITE-01",
+    "consent_date": "2025-02-03",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-02-24",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-02-08"
+  },
+  {
+    "subject_id": "S-005",
+    "site_id": "SITE-02",
+    "consent_date": "2025-03-05",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-03-17",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-03-11"
+  },
+  {
+    "subject_id": "S-006",
+    "site_id": "SITE-02",
+    "consent_date": "2025-03-12",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-03-24",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-03-UN"
+  },
+  {
+    "subject_id": "S-008",
+    "site_id": "SITE-02",
+    "consent_date": "2025-04-02",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-04-14",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-04-04"
+  },
+  {
+    "subject_id": "S-010",
+    "site_id": "SITE-02",
+    "consent_date": "2025-04-16",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-04-28",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-04-22"
+  },
+  {
+    "subject_id": "S-014",
+    "site_id": "SITE-02",
+    "consent_date": "2025-05-05",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-05-19",
+    "enrollment_status": "Randomized",
+    "screen_failure_reason": null,
+    "entered_date": "2025-05-06"
+  },
+  {
+    "subject_id": "S-007",
+    "site_id": "SITE-03",
+    "consent_date": "2025-03-20",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-04-07",
+    "enrollment_status": "randomised",
+    "screen_failure_reason": null,
+    "entered_date": "2025-04"
+  },
+  {
+    "subject_id": "S-011",
+    "site_id": "SITE-03",
+    "consent_date": "2025-05-08",
+    "protocol_version_consented": "1.0",
+    "anchor_date": null,
+    "enrollment_status": "Screen Failure",
+    "screen_failure_reason": "Inclusion criterion 4 not met: ANC 1.1 x10^9/L at screening",
+    "entered_date": "2025-06-21"
+  },
+  {
+    "subject_id": "S-012",
+    "site_id": "SITE-03",
+    "consent_date": "2025-07-21",
+    "protocol_version_consented": "2.0",
+    "anchor_date": "2025-08-04",
+    "enrollment_status": "RAND ",
+    "screen_failure_reason": null,
+    "entered_date": "2025-10-08"
+  },
+  {
+    "subject_id": "S-013",
+    "site_id": "SITE-03",
+    "consent_date": "2025-05-19",
+    "protocol_version_consented": "1.0",
+    "anchor_date": "2025-06-02",
+    "enrollment_status": "COMPLETED",
+    "screen_failure_reason": null,
+    "entered_date": "2025-06-26"
+  }
+]
