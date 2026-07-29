@@ -17,7 +17,7 @@
     "anchor_date": "2025-03-03",
     "enrollment_status": "Randomized",
     "screen_failure_reason": null,
-    "entered_date": "2025-02-23"
+    "entered_date": "2025-02-UN"
   },
   {
     "subject_id": "S-003",
@@ -37,7 +37,7 @@
     "anchor_date": "2025-07-07",
     "enrollment_status": "Randomized",
     "screen_failure_reason": null,
-    "entered_date": "2025-06-23"
+    "entered_date": "2025-06-UN"
   },
   {
     "subject_id": "S-009",
@@ -77,7 +77,7 @@
     "anchor_date": "2025-03-24",
     "enrollment_status": "Randomized",
     "screen_failure_reason": null,
-    "entered_date": "2025-03-UN"
+    "entered_date": "2025-03-13"
   },
   {
     "subject_id": "S-008",
@@ -117,7 +117,7 @@
     "anchor_date": "2025-04-07",
     "enrollment_status": "randomised",
     "screen_failure_reason": null,
-    "entered_date": "2025-04"
+    "entered_date": "2025-04-30"
   },
   {
     "subject_id": "S-011",

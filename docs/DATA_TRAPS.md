@@ -231,11 +231,11 @@ Week 12 recorded as '2025-10' (true value 2025-10-06); the target was 2025-08-25
 ### A1 partial dates at scale — (all sites, weighted to SITE-03)
 
 - **File:** `all files`
-- **Records:** 35 fields across visits/vitals/dosing/subjects
+- **Records:** 34 fields across visits/vitals/dosing/subjects
 - **Expected verdict:** `compliant`
 - **Expected routing:** none - parsing requirement
 
-35 of 452 dated fields (7.7%) carry a partial ISO value: '2025-06', '2025-06-UN' or '2025'. These sit in entry and measurement dates where imprecision does not change a verdict, but every one of them must parse without crashing and must retain its precision. The verdict-bearing partial dates are listed separately above.
+34 of 445 dated fields (7.6%) carry a partial ISO value: '2025-06', '2025-06-UN' or '2025'. These sit in entry and measurement dates where imprecision does not change a verdict, but every one of them must parse without crashing and must retain its precision. The verdict-bearing partial dates are listed separately above.
 
 ### A10 out-of-range value — S-013
 
@@ -294,11 +294,11 @@ weight = 'NA'. The Week 8 dose cannot be assessed without a weight. Note the as-
 ### A2 sentinels in optional fields — (all sites, weighted to SITE-03)
 
 - **File:** `visits.json / dosing.json`
-- **Records:** 15 of 119 optional fields (12.6%)
+- **Records:** 11 of 119 optional fields (9.2%)
 - **Expected verdict:** `compliant`
 - **Expected routing:** none - normalisation only
 
-'' / null / NA / N/A / . / UNK / -999 / Not Done / ND all mean missing, and they arrive mixed within the same field. They must collapse to one representation. Observed spread: '.' x2, 'N/A' x2, 'NA' x1, 'Not Done' x3, 'UNK' x1, -999 x3, None x3.
+'' / null / NA / N/A / . / UNK / -999 / Not Done / ND all mean missing, and they arrive mixed within the same field. They must collapse to one representation. Observed spread: '.' x1, 'N/A' x3, 'NA' x2, 'ND' x2, 'Not Done' x1, None x2.
 
 ### A3 subject ID format drift — S-007
 
@@ -366,7 +366,7 @@ enrollment_status appears as Randomized / randomised / 'RAND ' / Rand / COMPLETE
 ### A7 free text where a code belongs — SITE-01 / SITE-02
 
 - **File:** `visits.json`
-- **Records:** VR-0003, VR-0014, VR-0026, VR-0042, VR-0054, VR-0057, VR-0061, VR-0045
+- **Records:** VR-0003, VR-0007, VR-0014, VR-0046, VR-0058, VR-0062, VR-0067, VR-0045
 - **Expected verdict:** `compliant`
 - **Expected routing:** quote as evidence only
 

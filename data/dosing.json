@@ -29,7 +29,7 @@
     "dose_administered": "352",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": "Not Done",
+    "reason": null,
     "entered_date": "2025-05-17"
   },
   {
@@ -51,7 +51,7 @@
     "dose_administered": "440",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": ".",
+    "reason": null,
     "entered_date": "2025-03-07"
   },
   {
@@ -106,7 +106,7 @@
     "dose_administered": "322",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": null,
+    "reason": "N/A",
     "entered_date": "2025-07-25"
   },
   {
@@ -140,7 +140,7 @@
     "dose_unit": "mg",
     "dose_status": "Administered",
     "reason": null,
-    "entered_date": "2025-10-13"
+    "entered_date": "2025-10"
   },
   {
     "dosing_record_id": "DR-0014",
@@ -184,7 +184,7 @@
     "dose_unit": "mg",
     "dose_status": "Administered",
     "reason": null,
-    "entered_date": "2025-09-UN"
+    "entered_date": "2025-09-03"
   },
   {
     "dosing_record_id": "DR-0018",
@@ -338,7 +338,7 @@
     "dose_unit": "mg",
     "dose_status": "Administered",
     "reason": null,
-    "entered_date": "2025-04-UN"
+    "entered_date": "2025-04-24"
   },
   {
     "dosing_record_id": "DR-0032",
@@ -360,7 +360,7 @@
     "dose_unit": "mg",
     "dose_status": "Administered",
     "reason": null,
-    "entered_date": "2025-06-09"
+    "entered_date": "2025-06"
   },
   {
     "dosing_record_id": "DR-0034",
@@ -414,7 +414,7 @@
     "dose_administered": "334",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": "N/A",
+    "reason": null,
     "entered_date": "2025-06-18"
   },
   {
@@ -491,8 +491,8 @@
     "dose_administered": "420",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": "Not Done",
-    "entered_date": "2025-04"
+    "reason": ".",
+    "entered_date": "2025-04-28"
   },
   {
     "dosing_record_id": "DR-0046",
@@ -513,7 +513,7 @@
     "dose_administered": "414",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": "Not Done",
+    "reason": null,
     "entered_date": "2025-06-26"
   },
   {
@@ -525,7 +525,7 @@
     "dose_unit": "mg",
     "dose_status": "Administered",
     "reason": "Infusion stopped early, remainder not administered",
-    "entered_date": "2025"
+    "entered_date": "2025-07-25"
   },
   {
     "dosing_record_id": "DR-0050",
@@ -601,7 +601,7 @@
     "dose_administered": "408",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": "UNK",
+    "reason": null,
     "entered_date": "2025-06-09"
   },
   {
@@ -612,7 +612,7 @@
     "dose_administered": "408",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": ".",
+    "reason": null,
     "entered_date": "2025-07-05"
   },
   {
@@ -744,7 +744,7 @@
     "dose_administered": "358",
     "dose_unit": "mg",
     "dose_status": "Administered",
-    "reason": null,
+    "reason": "N/A",
     "entered_date": "2026-02-04"
   },
   {

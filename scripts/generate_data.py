@@ -195,6 +195,10 @@ ROSTER = [
 
 CLEAN_SUBJECTS = ["S-009", "S-012", "S-014", "S-015"]
 
+# Subjects whose weight records carry a targeted trap. Their measurement dates
+# stay precise so the trap remains reachable through the as-of lookup.
+WEIGHT_TRAP_SUBJECTS = {"S-007", "S-011", "S-013"}
+
 # Layer A missing-value sentinels. All of these mean "missing"; normalisation
 # has to collapse them to one representation.
 SENTINELS = ["", None, "NA", "N/A", ".", "UNK", -999, "Not Done", "ND"]
@@ -586,6 +590,13 @@ class LayerA:
     # Every alias SITE-03 uses for S-007.
     S007_ALIASES = {"S-007", "S007", "007", "SITE03-007", "s-007"}
 
+    @staticmethod
+    def _canonical_subject(record) -> str:
+        raw = str(record.get("subject_id") or "")
+        digits = "".join(ch for ch in raw if ch.isdigit())
+        # 'SITE03-007' carries the site number too; the subject is the tail.
+        return f"S-{int(digits[-3:]):03d}" if digits else ""
+
     def __init__(self, builder: Builder):
         self.b = builder
         self.rng = builder.rng
@@ -662,11 +673,6 @@ class LayerA:
                    f"day and no imputation is needed. A system that treats every partial date as "
                    f"unassessable is as wrong as one that imputes -- this record separates them.")
 
-        # A1 at scale: ~8% of dated fields overall. The verdict-bearing dates
-        # above are deliberate; these are the ordinary background noise, in
-        # fields where imprecision does not change a verdict but still has to
-        # survive parsing. Concentrated at SITE-03.
-        self._scatter_partial_dates()
 
     def _scatter_partial_dates(self):
         """Degrade ~8% of all dated fields to a partial ISO form."""
@@ -682,6 +688,15 @@ class LayerA:
         # The four clean subjects stay clean. A dataset needs a control group.
         dated = [item for item in dated
                  if item[0].get("subject_id") not in CLEAN_SUBJECTS]
+        # Do not degrade a measurement date that a targeted weight trap depends
+        # on. If S-007's Day 1 measured_date loses its day, the as-of lookup
+        # falls back to the screening weight and the lb trap stops testing what
+        # it exists to test; if S-013's -999 record loses its date, the exact-
+        # date rejection turns into a silent fallback. Layer A is meant to
+        # obscure Layer B, not to disarm it.
+        dated = [item for item in dated
+                 if not (item[1] == "measured_date"
+                         and self._canonical_subject(item[0]) in WEIGHT_TRAP_SUBJECTS)]
 
         def weight(item):
             return 3 if item[0].get("site_id") == "SITE-03" else 1
@@ -989,6 +1004,9 @@ class LayerA:
         self.referential_gaps()
         self.out_of_range()
         self.ambiguous_dates()
+        # Background noise goes on last, over the top of the targeted damage,
+        # so it can be told which records not to touch.
+        self._scatter_partial_dates()
 
 
 # --------------------------------------------------------------------------
