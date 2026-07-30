@@ -75,8 +75,15 @@ class AgentNodes:
 
     def review(self, state: AgentState) -> dict[str, Any]:
         decision = state.get("_decision", {})
-        subject_id = decision.get("subject_id") or state.get("active_subject_id")
-        site_id = decision.get("site_id") or state.get("active_site_id")
+        # A newly named subject or site replaces the conversational context
+        # rather than merging with it. Falling back to the previous subject
+        # when the user names a site answers a question nobody asked.
+        if decision.get("subject_id") or decision.get("site_id"):
+            subject_id = decision.get("subject_id")
+            site_id = decision.get("site_id")
+        else:
+            subject_id = state.get("active_subject_id")
+            site_id = state.get("active_site_id")
 
         study = Study.load(self.data_dir)
         findings = run_all(study)
@@ -346,7 +353,7 @@ def _render_review(findings, drafts, scope) -> str:
             token = (f" — requires the exact token `{draft.required_token}`"
                      if draft.needs_exact_token else "")
             lines.append(f"- `{draft.action_id}` {draft.action_type} "
-                         f"→ sandbox/{draft.target_ledger}.json{token}")
+                         f"-> sandbox/{draft.target_ledger}.json{token}")
     return "\n".join(lines)
 
 
