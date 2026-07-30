@@ -222,14 +222,32 @@ FREE_TEXT = [
 ISSUES: list[dict] = []
 
 
-def plant(*, layer, code, file, records, subject, verdict, routing, note):
+def plant(*, layer, code, file, records, subject, verdict, routing, note, expect=None):
     """Record a planted issue so DATA_TRAPS.md is rendered from the same source
-    of truth the data was built from."""
+    of truth the data was built from.
+
+    `expect` carries the machine-checkable part: which detector should say what
+    about which (subject, visit). Without it the ground truth is prose, and a
+    prose ground truth can only be diffed by a human reading carefully -- which
+    is exactly the check that keeps being skipped.
+    """
     ISSUES.append({
         "layer": layer, "code": code, "file": file,
         "records": records if isinstance(records, list) else [records],
         "subject": subject, "verdict": verdict, "routing": routing, "note": note,
+        "expect": expect or [],
     })
+
+
+def expectation(subject, visit, verdict, detector=None, *,
+                actions=None, forbidden_actions=None, must_cite=None, suppressed=None):
+    """One machine-checkable claim about what the detectors should produce."""
+    return {
+        "subject_id": subject, "visit_id": visit, "verdict": verdict,
+        "detector": detector, "actions": actions or [],
+        "forbidden_actions": forbidden_actions or [],
+        "must_cite": must_cite or [], "suppressed": suppressed,
+    }
 
 
 # --------------------------------------------------------------------------
@@ -314,7 +332,8 @@ class Builder:
               note="Consented, screened, laboratory data present, failed inclusion criterion 4, "
                    "never dosed and never randomised. Protocol compliance does not apply to a "
                    "subject who was never enrolled. Any deviation finding against S-011 is a "
-                   "false positive.")
+                   "false positive.",
+              expect=[expectation("S-011", None, "compliant")])
 
         plant(layer="A", code="A6 case/whitespace drift in categoricals", file="subjects.json",
               records=["SITE-03 subjects"], subject="SITE-03", verdict="compliant",
@@ -339,7 +358,12 @@ class Builder:
             return
 
         anchor = date.fromisoformat(row["anchor"])
-        screening_date = anchor - timedelta(days=14)
+        # Screening sits in the 28 days before Day 1, but it must also fall
+        # AFTER consent. A fixed anchor-14 offset silently puts screening before
+        # consent for every subject enrolled quickly, which manufactures
+        # consent-sequence deviations and drowns the one deliberate trap.
+        gap = (anchor - consent).days
+        screening_date = anchor - timedelta(days=min(14, max(gap - 1, 1)))
 
         # Trap B10: a screening procedure dated one day BEFORE consent.
         if "consent_sequence" in traps:
@@ -349,7 +373,9 @@ class Builder:
                   routing="deviation log (proposed: important) + escalate_to_medical_monitor",
                   note=f"Screening visit dated {screening_date.isoformat()}, one day before the "
                        f"consent date {consent.isoformat()}. A study procedure performed before "
-                       f"informed consent affects participant rights -- proposed important.")
+                       f"informed consent affects participant rights -- proposed important.",
+              expect=[expectation(subject_id, "SCR", "deviation", "consent_sequence",
+                                      actions=["log_deviation", "escalate_to_medical_monitor"])])
 
         self.visits.append(self._visit(subject_id, site_id, "SCR", "Screening",
                                        screening_date, ["labs", "eligibility"], "Completed"))
@@ -367,7 +393,8 @@ class Builder:
                       verdict="deviation", routing="raise_site_query, then deviation log",
                       note=f"No Week 8 record exists for {subject_id} and the window "
                            f"({target_date(anchor, 57).isoformat()} +/-3) closed long ago. "
-                           f"Absence of a record is only a finding once the window is shut.")
+                           f"Absence of a record is only a finding once the window is shut.",
+              expect=[expectation(subject_id, "V3", "deviation", "missed_visit")])
                 continue
 
             offset = self._lateness(vid, traps)
@@ -382,7 +409,8 @@ class Builder:
                       routing="raise_site_query (proposed: not important pending PI review)",
                       note=f"{subject_id} is governed by v2.0, which requires a 12-lead ECG at "
                            f"Week 12. The visit occurred on {actual.isoformat()} and recorded "
-                           f"labs/vitals/dose but no ECG. A v1.0 subject would be compliant here.")
+                           f"labs/vitals/dose but no ECG. A v1.0 subject would be compliant here.",
+              expect=[expectation(subject_id, "V4", "deviation", "missing_assessment")])
 
             self.visits.append(self._visit(subject_id, site_id, vid, visit["label"],
                                            actual, assessments, "Completed"))
@@ -430,14 +458,18 @@ class Builder:
                            f"{days} days late. S-004 and S-009 are {days} days late by the same "
                            f"calendar arithmetic and reach OPPOSITE verdicts. Measuring S-004 "
                            f"against v2.0 would suppress a real deviation; measuring S-009 "
-                           f"against v1.0 would fabricate one.")
+                           f"against v1.0 would fabricate one.",
+              expect=[expectation(subject_id, "V2", "compliant" if compliant else "deviation",
+                            None if compliant else "out_of_window_visit")])
             else:
                 plant(layer="B", code="B9 systemic pattern (SITE-02 Week 4)", file="visits.json",
                       records=[f"{subject_id} V2"], subject=subject_id, verdict="deviation",
                       routing="SUPPRESSED into propose_protocol_amendment + open_capa",
                       note=f"Week 4 {days} days late against a +/-{window} window. One of four "
                            f"such deviations at SITE-02. Individually a deviation; correctly "
-                           f"reported it is subsumed by the site-level pattern.")
+                           f"reported it is subsumed by the site-level pattern.",
+              expect=[expectation(subject_id, "V2", "deviation", "out_of_window_visit",
+                            suppressed=True)])
 
         if "v3_out_of_window_already_logged" in traps:
             actual = target_date(anchor, 57) + timedelta(days=6)
@@ -446,7 +478,9 @@ class Builder:
                   verdict="deviation", routing="none - already recorded, must NOT be re-filed",
                   note=f"Week 8 performed {actual.isoformat()}, 6 days after the target against a "
                        f"+/-3 window. The deviation is genuine, but DEV-0001 already records it. "
-                       f"Filing it again double-reports and inflates the site's deviation rate.")
+                       f"Filing it again double-reports and inflates the site's deviation rate.",
+              expect=[expectation(subject_id, "V3", "deviation", "out_of_window_visit",
+                            suppressed=True)])
 
     def _build_dose(self, row, visit_id, when, traps):
         subject_id = row["subject_id"]
@@ -477,7 +511,11 @@ class Builder:
                        "was made to eliminate an immediate hazard to the participant, which "
                        "ICH E6(R3) 2.5.3 permits. It must be documented; it must NOT generate a "
                        "corrective action against a site that did exactly the right thing. The "
-                       "finding text must cite 2.5.3.")
+                       "finding text must cite 2.5.3.",
+              expect=[expectation(subject_id, "V3", "deviation", "dose_deviation",
+                                    actions=["log_deviation"],
+                                    forbidden_actions=["open_capa"],
+                                    must_cite=["2.5.3"])])
             return
 
         dose = expected_dose_mg(weight_kg)
@@ -502,7 +540,9 @@ class Builder:
                   routing="deviation log (proposed: important) + escalate_to_medical_monitor",
                   note=f"Weight as of {when.isoformat()} is {weight_kg} kg, so 5 mg/kg expects "
                        f"{dose} mg. {administered} mg was administered -- {pct}% below expected. "
-                       f"Underdosing affects data reliability and possibly participant benefit.")
+                       f"Underdosing affects data reliability and possibly participant benefit.",
+              expect=[expectation(subject_id, "V4", "deviation", "dose_deviation",
+                                    actions=["escalate_to_medical_monitor"])])
             return
 
         self.dosing.append({
@@ -653,7 +693,8 @@ class LayerA:
                   note=f"{visit_id} visit_date recorded as '{partial}' (true value "
                        f"{original}). A date without a day cannot be placed inside a +/-3 day "
                        f"window. Imputing a day and then issuing a deviation verdict would be "
-                       f"a fabricated finding; per CDISC guidance, reflect what is known.")
+                       f"a fabricated finding; per CDISC guidance, reflect what is known.",
+              expect=[expectation(subject_id, visit_id, "not_assessable")])
 
         # A date that is partial but still decidable: the visit was genuinely
         # six weeks late, and every day in the recorded month falls outside the
@@ -671,7 +712,8 @@ class LayerA:
                    f"{(target + timedelta(days=3)).isoformat()}. Every day in the recorded month "
                    f"falls outside that window, so the verdict holds regardless of the missing "
                    f"day and no imputation is needed. A system that treats every partial date as "
-                   f"unassessable is as wrong as one that imputes -- this record separates them.")
+                   f"unassessable is as wrong as one that imputes -- this record separates them.",
+              expect=[expectation("S-013", "V4", "deviation", "out_of_window_visit")])
 
 
     def _scatter_partial_dates(self):
@@ -752,7 +794,8 @@ class LayerA:
               note="weight = -999. Entering a mg/kg calculation unchecked this yields an "
                    "expected dose of -4995 mg, and the administered dose then looks wildly "
                    "over. Sentinels must map to missing BEFORE any arithmetic, and a missing "
-                   "weight makes the dose not_assessable -- not zero, and not a deviation.")
+                   "weight makes the dose not_assessable -- not zero, and not a deviation.",
+              expect=[expectation("S-013", "V3", "not_assessable", "dose_deviation")])
 
         record = self.find_vitals("S-007", "V3")
         record["weight"] = "NA"
@@ -763,7 +806,8 @@ class LayerA:
               verdict="not_assessable", routing="raise_site_query",
               note="weight = 'NA'. The Week 8 dose cannot be assessed without a weight. Note "
                    "the as-of rule does not rescue this: the Week 4 weight is not the Week 8 "
-                   "weight, and substituting it silently would be an undeclared imputation.")
+                   "weight, and substituting it silently would be an undeclared imputation.",
+              expect=[expectation("S-007", "V3", "not_assessable", "dose_deviation")])
 
         # Harmless sentinels in optional fields: ~12%, all sites. Must
         # normalise; must not be read as content.
@@ -832,7 +876,8 @@ class LayerA:
               verdict="not_assessable", routing="raise_site_query",
               note=f"weight = {record['weight']} with no weight_unit field at all. Assuming kg "
                    f"is exactly the mistake the lb site exists to punish. A missing unit is "
-                   f"not_assessable, not an assumed kg.")
+                   f"not_assessable, not an assumed kg.",
+              expect=[expectation("S-013", "V2", "not_assessable", "dose_deviation")])
 
         # Same quantity, three encodings. All parseable; none may change a verdict.
         variants = []
@@ -881,7 +926,8 @@ class LayerA:
                   note=f"The same {visit_id} visit entered twice, dates one day apart, the second "
                        f"entered two weeks later without the first being voided. Which date is "
                        f"authoritative is a question for the site. Do not silently pick one, and "
-                       f"do not count the visit twice.")
+                       f"do not count the visit twice.",
+              expect=[expectation(subject_id, visit_id, "not_assessable", "out_of_window_visit")])
 
     # -- A7: free text where a code belongs --------------------------------
     def free_text(self):
@@ -920,7 +966,8 @@ class LayerA:
               records=[orphan["visit_record_id"]], subject="(none)",
               verdict="not_assessable", routing="escalate - no automated remedy",
               note="A Week 4 visit with an empty subject_id. There is no defensible way to "
-                   "guess whose visit this is. Escalate; never attribute it by proximity.")
+                   "guess whose visit this is. Escalate; never attribute it by proximity.",
+              expect=[expectation(None, "V2", "not_assessable", "unattributable_record")])
 
         unknown = dict(orphan)
         unknown["visit_record_id"] = self.b.next_id("VR")
@@ -965,7 +1012,8 @@ class LayerA:
               note="weight = 8.16 kg for an adult -- a decimal slip of 81.6. A plausibility "
                    "bound (30-250 kg) must reject this rather than computing a 41 mg expected "
                    "dose and reporting the real 355 mg as a 767% overdose. State the bound in "
-                   "the finding so the site can see what was rejected and why.")
+                   "the finding so the site can see what was rejected and why.",
+              expect=[expectation("S-013", "V5", "not_assessable", "dose_deviation")])
 
         record = self.find_vitals("S-011", "SCR")
         record["weight"] = "1800"
@@ -1008,7 +1056,8 @@ class LayerA:
                        f"{opens.isoformat()}-{closes.isoformat()} window; read MM/DD it is "
                        f"{swapped.isoformat()}, outside it. The two readings give opposite "
                        f"verdicts, so picking a locale and proceeding is exactly how a "
-                       f"confident wrong answer gets produced.")
+                       f"confident wrong answer gets produced.",
+              expect=[expectation(subject_id, visit_id, "not_assessable", "out_of_window_visit")])
 
     def _straddling_ambiguous_date(self, subject_id, visit_id):
         """Find a day in the visit window whose day/month swap lands outside it."""
@@ -1067,7 +1116,8 @@ def plant_static_traps():
           note="SITE-03 records weight in lb. S-007 weighs 180 lb = 81.6 kg, so 5 mg/kg expects "
                "408 mg, and 408 mg was administered -- compliant. Read as kg the expectation "
                "becomes 900 mg and a correct dose looks like a 55% underdose. This is the "
-               "highest-consequence false positive in the dataset.")
+               "highest-consequence false positive in the dataset.",
+              expect=[expectation("S-007", "V1", "compliant")])
 
     plant(layer="B", code="B7 per-visit windows differ", file="protocol.json",
           records=["visit_schedule"], subject="(all)", verdict="compliant",
@@ -1296,6 +1346,14 @@ def main() -> None:
     (DOCS / "DATA_TRAPS.md").write_text(
         render_data_traps(builder, layer_a, stats), encoding="utf-8"
     )
+    # The same ground truth, machine-checkable. Prose can only be diffed by a
+    # human reading carefully, which is exactly the check that keeps slipping.
+    write_json(DOCS / "data_traps.json", {
+        "seed": SEED,
+        "clean_subjects": CLEAN_SUBJECTS,
+        "not_assessable_rate": round(stats["rate"], 2),
+        "issues": ISSUES,
+    })
 
     print(stats["summary_text"])
     print()

@@ -5,13 +5,13 @@
     "site_id": "SITE-01",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-02-03",
+    "visit_date": "2025-02-11",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-02-09",
+    "entered_date": "2025-02-17",
     "comment": null
   },
   {
@@ -99,13 +99,13 @@
     "site_id": "SITE-01",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-02-17",
+    "visit_date": "2025-02-21",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-02-17",
+    "entered_date": "2025-02-21",
     "comment": "site delay - staff shortage"
   },
   {
@@ -209,13 +209,13 @@
     "site_id": "SITE-01",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-07-07",
+    "visit_date": "2025-07-15",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-07-11",
+    "entered_date": "2025-07-19",
     "comment": "beteg nem jelent meg"
   },
   {
@@ -650,13 +650,13 @@
     "site_id": "SITE-02",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-03-03",
+    "visit_date": "2025-03-06",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-03-07",
+    "entered_date": "2025-03-10",
     "comment": null
   },
   {
@@ -870,13 +870,13 @@
     "site_id": "SITE-02",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-03-31",
+    "visit_date": "2025-04-03",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-04-03",
+    "entered_date": "2025-04-06",
     "comment": null
   },
   {
@@ -980,13 +980,13 @@
     "site_id": "SITE-02",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-04-14",
+    "visit_date": "2025-04-17",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-04-20",
+    "entered_date": "2025-04-23",
     "comment": null
   },
   {
@@ -1074,13 +1074,13 @@
     "site_id": "SITE-02",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-05-05",
+    "visit_date": "2025-05-06",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-05-11",
+    "entered_date": "2025-05-12",
     "comment": null
   },
   {
@@ -1309,13 +1309,13 @@
     "site_id": "SITE-03",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-07-21",
+    "visit_date": "2025-07-22",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-10-02",
+    "entered_date": "2025-10-03",
     "comment": null
   },
   {
@@ -1420,13 +1420,13 @@
     "site_id": "SITE-03",
     "visit_id": "SCR",
     "visit_label": "Screening",
-    "visit_date": "2025-05-19",
+    "visit_date": "2025-05-20",
     "assessments_done": [
       "labs",
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-08-11",
+    "entered_date": "2025-08-12",
     "comment": null
   },
   {
@@ -1584,7 +1584,7 @@
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-02-09",
+    "entered_date": "2025-02-17",
     "comment": "see source"
   },
   {
@@ -1599,7 +1599,7 @@
       "eligibility"
     ],
     "status": "Completed",
-    "entered_date": "2025-02-09",
+    "entered_date": "2025-02-17",
     "comment": null
   }
 ]

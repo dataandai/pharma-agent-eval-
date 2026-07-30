@@ -4,11 +4,11 @@
     "subject_id": "S-001",
     "site_id": "SITE-01",
     "visit_id": "SCR",
-    "measured_date": "2025-02-03",
+    "measured_date": "2025-02-11",
     "weight": "72.4",
     "weight_unit": "kg",
     "height_cm": "170",
-    "entered_date": "2025-02-09"
+    "entered_date": "2025-02-17"
   },
   {
     "vitals_record_id": "VT-0002",
@@ -70,11 +70,11 @@
     "subject_id": "S-002",
     "site_id": "SITE-01",
     "visit_id": "SCR",
-    "measured_date": "2025-02-17",
+    "measured_date": "2025-02-21",
     "weight": "88.0",
     "weight_unit": "kg",
     "height_cm": "182",
-    "entered_date": "2025-02-20"
+    "entered_date": "2025-02-24"
   },
   {
     "vitals_record_id": "VT-0008",
@@ -151,7 +151,7 @@
     "weight": "64.5",
     "weight_unit": "kg",
     "height_cm": "163",
-    "entered_date": "2025-07-13"
+    "entered_date": "2025-07-21"
   },
   {
     "vitals_record_id": "VT-0015",
@@ -455,11 +455,11 @@
     "subject_id": "S-005",
     "site_id": "SITE-02",
     "visit_id": "SCR",
-    "measured_date": "2025-03-03",
+    "measured_date": "2025-03-06",
     "weight": "75.0",
     "weight_unit": "kg",
     "height_cm": "172",
-    "entered_date": "2025-03-05"
+    "entered_date": "2025-03-08"
   },
   {
     "vitals_record_id": "VT-0043",
@@ -609,11 +609,11 @@
     "subject_id": "S-008",
     "site_id": "SITE-02",
     "visit_id": "SCR",
-    "measured_date": "2025-03-31",
+    "measured_date": "2025-04-03",
     "weight": "91.5",
     "weight_unit": "kg",
     "height_cm": "188",
-    "entered_date": "2025-04-04"
+    "entered_date": "2025-04-07"
   },
   {
     "vitals_record_id": "VT-0057",
@@ -690,7 +690,7 @@
     "weight": "84.0",
     "weight_unit": "kg",
     "height_cm": "181",
-    "entered_date": "2025-04-16"
+    "entered_date": "2025-04-19"
   },
   {
     "vitals_record_id": "VT-0064",
@@ -763,11 +763,11 @@
     "subject_id": "S-014",
     "site_id": "SITE-02",
     "visit_id": "SCR",
-    "measured_date": "2025-05-05",
+    "measured_date": "2025-05-06",
     "weight": "77.3",
     "weight_unit": "kg",
     "height_cm": "174",
-    "entered_date": "2025-05-11"
+    "entered_date": "2025-05-12"
   },
   {
     "vitals_record_id": "VT-0071",
@@ -928,11 +928,11 @@
     "subject_id": "S-012",
     "site_id": "SITE-03",
     "visit_id": "SCR",
-    "measured_date": "2025-07-21",
+    "measured_date": "2025-07-22",
     "weight": "80.1",
     "weight_unit": "kg",
     "height_cm": "178",
-    "entered_date": "2025-09-02"
+    "entered_date": "2025-09-03"
   },
   {
     "vitals_record_id": "VT-0086",
@@ -1005,11 +1005,11 @@
     "subject_id": "S-013",
     "site_id": "SITE-03",
     "visit_id": "SCR",
-    "measured_date": "2025-05-19",
+    "measured_date": "2025-05-20",
     "weight": "73.9",
     "weight_unit": "kg",
     "height_cm": "171",
-    "entered_date": "2025-08-16"
+    "entered_date": "2025-08-17"
   },
   {
     "vitals_record_id": "VT-0093",
