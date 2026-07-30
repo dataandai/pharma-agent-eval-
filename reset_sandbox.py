@@ -1,6 +1,7 @@
 from pathlib import Path
-from src.data.repositories import SandboxRepository
+
+from src.sandbox import Sandbox
 
 ROOT = Path(__file__).resolve().parent
-SandboxRepository(ROOT).reset()
+Sandbox(ROOT).reset()
 print("Sandbox reset.")

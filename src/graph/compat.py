@@ -6,11 +6,21 @@ try:  # pragma: no cover - exercised when langgraph is installed
         from langgraph.checkpoint.memory import InMemorySaver as MemorySaver  # type: ignore
     except ImportError:
         from langgraph.checkpoint.memory import MemorySaver  # type: ignore
+    from langgraph.types import Command, interrupt  # type: ignore
     USING_REAL_LANGGRAPH = True
+    HAS_INTERRUPT = True
 except ImportError:  # lightweight offline fallback for this generated sandbox
     START = "__start__"
     END = "__end__"
     USING_REAL_LANGGRAPH = False
+    HAS_INTERRUPT = False
+
+    def interrupt(payload):  # pragma: no cover - offline fallback
+        raise RuntimeError("interrupt() requires langgraph")
+
+    class Command:  # pragma: no cover - offline fallback
+        def __init__(self, resume=None, **_):
+            self.resume = resume
 
     class MemorySaver:
         def __init__(self):
