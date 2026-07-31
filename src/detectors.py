@@ -227,8 +227,8 @@ def out_of_window_visit(study: Study) -> list[Finding]:
             )
 
             if already is not None:
-                # The 'existing credit memo' case. The deviation is real; it is
-                # already on the record, and filing it again double-reports.
+                # The deviation is real, and it is already on the record.
+                # Filing it again double-reports.
                 finding = replace(
                     finding,
                     suppressed_by=f"deviation_log:{already.deviation_id}",

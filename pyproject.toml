@@ -1,13 +1,16 @@
 [project]
-name = "revenue-leakage-agent-mock"
-version = "0.1.0"
-description = "Stateful LangGraph revenue leakage demo with deterministic financial tools"
+name = "protocol-deviation-agent"
+version = "1.0.0"
+description = "Clinical trial protocol deviation oversight: deterministic detection, surfaced ambiguity, and a human gate on every write"
 requires-python = ">=3.11"
 dependencies = [
-  "pydantic>=2.7,<3",
   "langgraph>=0.2",
   "streamlit>=1.32",
+  "anthropic>=0.28",
 ]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]

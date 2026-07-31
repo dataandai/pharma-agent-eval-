@@ -1,7 +1,7 @@
 """Corrective actions: drafted from findings, written only through the gate.
 
-Five actions, richer than the billing set because E6(R3) requires prevention as
-well as documentation:
+Five actions. E6(R3) requires prevention as well as documentation, so the set
+has to include a path to a CAPA:
 
 | action                      | when                                      |
 |-----------------------------|-------------------------------------------|

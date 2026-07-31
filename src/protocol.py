@@ -14,8 +14,8 @@ different calendar date for every subject. "Day 29 +/-3" is therefore a
 different window per subject. Computing it from the enrolment or consent date
 instead silently shifts every window in the study.
 
-Same shape as the FX lesson: use the value as of the relevant anchor, not the
-one that happens to be nearest to hand.
+One shape underlies both: use the value as of the relevant anchor, not the one
+that happens to be nearest to hand.
 """
 
 from __future__ import annotations

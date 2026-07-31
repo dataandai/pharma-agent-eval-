@@ -1,9 +1,8 @@
 """Loading and exact indexing of one study's records.
 
 No vector store, no embeddings, no similarity. Every lookup here is an exact
-match on a normalised key. The argument is stronger in this domain than in
-billing: an approximate retrieval miss does not merely lose a row, it fabricates
-a safety finding or hides one.
+match on a normalised key. An approximate retrieval miss does not merely lose a
+row here: it fabricates a safety finding, or hides one.
 
 Normalisation happens once, on load, and every normalisation is recorded rather
 than performed silently -- the count of records that matched only after
@@ -151,8 +150,10 @@ class Study:
 
     def logged_deviation(self, subject_id: str, visit_id: str,
                          category: str) -> LoggedDeviation | None:
-        """The 'existing credit memo' check. An already-recorded deviation must
-        not be filed a second time."""
+        """An already-recorded deviation must not be filed a second time.
+
+        Double-reporting inflates the deviation rate the sponsor reports to the
+        regulator, and buries the entry the investigator already reviewed."""
         for entry in self.deviation_log:
             if (entry.subject_id == subject_id
                     and entry.visit_id == visit_id

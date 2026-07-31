@@ -1,8 +1,7 @@
 """Append-only, hash-chained audit trail.
 
-More important here than in billing, not less: this is a regulated audit trail,
-and an inspector reading it must be able to reconstruct who decided what, on
-what evidence, and in what words.
+This is a regulated audit trail. An inspector reading it must be able to
+reconstruct who decided what, on what evidence, and in what words.
 
 Every approval event records five things the guideline cares about: the finding,
 the proposed classification, the reasoning behind that proposal, who approved,

@@ -1,7 +1,7 @@
 """Dose normalisation with provenance.
 
-The structural heir of the FX module, and it carries the same lesson: a rate
-depends on a date, and using the wrong one produces a plausible, wrong answer.
+A conversion factor that depends on a date, where using the wrong date
+produces a plausible, wrong answer.
 
 A mg/kg dose depends on body weight, and weight changes across a study. The
 expected dose at the Week 12 visit uses the Week 12 weight -- not the screening
@@ -337,9 +337,9 @@ def normalise_dose(
 ) -> DoseResult | DoseError:
     """Convert a dose between units for one subject on one date.
 
-    Mirrors `fx_convert(amount, from_ccy, to_ccy, on_date)`: the conversion
-    factor is looked up as of the date, not as of today, and the provenance of
-    that lookup travels with the answer.
+    The conversion factor -- the subject's weight -- is looked up as of the
+    visit date, not as of today, and the provenance of that lookup travels with
+    the answer.
     """
     canonical_subject = normalise_subject_id(subject_id)
     if canonical_subject is None:

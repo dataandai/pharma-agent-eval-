@@ -2,7 +2,7 @@
 
 The arithmetic layer. No agent, no I/O, no domain knowledge beyond units.
 
-Three rules carried over from the money module, and one added:
+Four rules:
 
 1. `Decimal` everywhere. A dosing calculation is not a place for float.
 2. Convert at full precision; quantize exactly once, at the boundary, when a

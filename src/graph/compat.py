@@ -9,7 +9,7 @@ try:  # pragma: no cover - exercised when langgraph is installed
     from langgraph.types import Command, interrupt  # type: ignore
     USING_REAL_LANGGRAPH = True
     HAS_INTERRUPT = True
-except ImportError:  # lightweight offline fallback for this generated sandbox
+except ImportError:  # lightweight offline fallback
     START = "__start__"
     END = "__end__"
     USING_REAL_LANGGRAPH = False

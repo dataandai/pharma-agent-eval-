@@ -1,5 +1,110 @@
 # Protocol Deviation Agent
 
+A program that checks clinical trial patient records against the trial's
+rulebook, finds the departures — and asks a human to decide about every single
+one, instead of acting on its own.
+
+---
+
+## What this is, in plain language
+
+When a new drug is tested on people, the trial has a very detailed rulebook. It
+is called the **protocol**. It says which patient must come back for which check,
+what has to be measured at that visit, and what dose they should receive.
+
+Reality is never that tidy. A patient turns up three days late. A lab result
+never makes it into the system. One site records body weight in pounds while
+another uses kilograms. Someone mistypes a date.
+
+Finding and documenting those departures is **mandatory**. If a regulator
+inspects later and discovers an unrecorded one, it can call the whole trial's
+result into question — years of work and the participation of thousands of
+people.
+
+The problem is that today this is largely manual. People sit over spreadsheets
+checking whether patient 47's twelfth visit fell inside the permitted window.
+Hundreds of patients, thousands of visits.
+
+This program reads the patient data and the protocol, compares them, explains
+every departure it finds, and **proposes** what to do about it. It writes nothing
+anywhere until a named, responsible person approves.
+
+### Four examples, all from the built-in sample data
+
+**1. Two patients, the same delay, opposite answers.** Subjects S-004 and S-009
+were both **exactly four days late** for the same check-up. For one it is a
+protocol departure; for the other it is not. The rulebook was amended
+mid-trial — the permitted slippage was widened from three days to five — and
+whoever consented under the old rules **stays under the old rules**, even if
+their visit happened after the change took effect. This error slips in very
+easily by hand, and it is wrong in both directions: it either hides a real
+departure or invents one that never happened.
+
+**2. Four patients were late — and it is not their fault.** At one site, four of
+five patients missed the same visit window by four or five days. The obvious
+reaction would be four incident reports. That is the **wrong answer**. If 80% of
+a site's patients cannot make the window, four separate mistakes did not happen —
+the window is too tight. So the program proposes one thing: amend the protocol.
+It keeps the four individual findings on record but does not file them
+separately. Four reports would not merely be noise; they would bury the real
+finding.
+
+**3. The doctor did the right thing — and must not be penalised for it.** For
+subject S-005 the investigator withheld a scheduled dose because the patient's
+blood counts had deteriorated. That is **formally a departure** — the protocol
+prescribes a dose that day — so it must be documented. But the international
+guideline (ICH E6(R3) §2.5.3) explicitly permits departing from the rulebook to
+protect a participant from immediate harm. So: record it, **but do not open a
+corrective action against the site.** A naive system would automatically
+discipline a doctor who did exactly what they should have. This one knows the
+difference.
+
+**4. "I cannot tell you that."** Possibly the most important one. Some records
+simply **cannot** yield an answer. If a visit date reads only "June 2025", you
+cannot decide whether it fell inside a three-day window. If a weight has no unit
+next to it, you cannot compute the correct dose. Most systems guess, or say
+"fine". Both are lies. This program gives a third answer: *"I cannot assess this,
+and here is the question I would put to the site."* In the sample data that
+covers 11% of records, two thirds of them from a single site — which is itself
+worth knowing.
+
+### Why this is worth building
+
+Three things separate it from a typical "AI-powered" solution.
+
+**The language model does no arithmetic.** The AI has exactly one job:
+understanding what the user is asking for. Every figure, date and comparison
+comes from ordinary, checkable program code. If it says "408 mg", that *is*
+408 mg — not a number that is probably right.
+
+**It writes nothing without a human.** Not for the sake of strictness. A
+departure record goes into the trial's official file and, for the more serious
+ones, to an ethics committee. The guideline places that decision with the
+**investigator** — a named, accountable person. So the program only ever
+proposes, and always states why. For the weightier decisions — classifying
+something as an *important deviation*, or escalating to a medical monitor — an
+"ok" is not enough; an exact confirmation phrase is required, because those
+carry regulatory consequences.
+
+**It tells you what it does not know.** A system reporting forty departures from
+data of which a quarter is unreadable is not thorough. It is confidently wrong,
+in a strictly regulated field.
+
+### Who it helps
+
+- **Clinical monitors**, who oversee the sites: instead of manual spreadsheet
+  work they get a list where every claim carries its calculation and the ID of
+  the record it came from. They do not have to trust it — they can look it up.
+- **Investigators**: the classification decision stays theirs, but arrives with a
+  prepared rationale and all the relevant data in one place.
+- **Data managers**: data quality problems and genuine protocol departures are
+  kept apart. That matters — filing a mistyped date as a departure needlessly
+  inflates the statistic the sponsor reports to the regulator.
+- **Patients**, indirectly: the less attention goes to noise, the more is left
+  for real safety signals.
+
+### What it does not do
+
 > I am not a clinical research professional. The domain model here is derived from
 > the public ICH E6(R3) guideline and from protocol and statistical analysis plan
 > documents published on clinicaltrials.gov. All data is synthetic. Classification
@@ -7,12 +112,24 @@
 > team before any real use. What is demonstrated is the oversight architecture:
 > deterministic detection, surfaced ambiguity, and a human gate on every write.
 
-A chat agent that reviews clinical trial data against a protocol, proposes
-corrective actions, and writes nothing without a named human approving it.
+**All the data is invented.** There is not one real data point about one real
+patient in it. A generator produces the sample study deliberately containing the
+traps above.
 
-The interesting claim is not that it finds deviations. It is that it **knows what
-it cannot assess** — and says so, instead of turning missing data into a
-confident answer.
+**The thresholds are illustrative.** Exactly what percentage of dose deviation
+counts as serious, or how many patients make a "systemic pattern" — I chose those
+numbers; they are not professional consensus. Every decision states which
+threshold drove it, so you can disagree with it specifically. Before any real use
+they would need validation by qualified people.
+
+**This is a demonstration, not a product.** No user authentication, no real
+database, no connection to any existing clinical system.
+
+What it demonstrates is not *"I can oversee a drug trial"*. It is **how you build
+a system that could be used in a regulated setting**: predictable behaviour,
+surfaced uncertainty, and a human before every single write.
+
+---
 
 ## Run
 
@@ -128,9 +245,8 @@ not used.
 ## Retrieval, and why there is none
 
 No vector store, no embeddings, no RAG. Every lookup is an exact match on a
-normalised key. The argument is stronger here than in billing: an approximate
-retrieval miss does not merely lose a row, it **fabricates a safety finding or
-hides one**. The key concepts registry is small, closed and known at build time;
+normalised key. An approximate retrieval miss does not merely lose a row here: it
+**fabricates a safety finding, or hides one**. The key concepts registry is small, closed and known at build time;
 embedding it would add an approximate lookup to a question with an exact answer.
 
 Normalisation happens once, on load, and every normalisation is *recorded* rather
