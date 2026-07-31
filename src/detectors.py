@@ -38,15 +38,18 @@ from src.findings import (
 from src.protocol import Schedule, assess_timing, expected_schedule, governing_version
 from src.quantities import QuantityError, parse_quantity
 from src.study import Study
+from src.thresholds import DEFAULTS, rationale_for
 from src.verdicts import Verdict
 
-# Illustrative thresholds. A qualified clinical team would set these; they are
-# stated here so a reader can see exactly what drove a verdict.
-DOSE_TOLERANCE = Decimal("0.10")            # +/-10% of expected is within tolerance
-DOSE_IMPORTANT_THRESHOLD = Decimal("0.20")  # beyond +/-20%, propose "important"
-SYSTEMIC_MIN_SUBJECTS = 3                   # a pattern needs at least this many
-SYSTEMIC_MIN_SHARE = Decimal("0.5")         # ...and this share of the site's subjects
-LATE_ENTRY_DAYS = 14                        # entry lag beyond this is a monitoring signal
+# Every number that turns evidence into a verdict lives in src/thresholds.py,
+# with the reasoning behind it and what happens if it moves. A finding that
+# depends on one names it.
+T = DEFAULTS
+DOSE_TOLERANCE = T.dose_tolerance
+DOSE_IMPORTANT_THRESHOLD = T.dose_important
+SYSTEMIC_MIN_SUBJECTS = T.systemic_min_subjects
+SYSTEMIC_MIN_SHARE = T.systemic_min_share
+LATE_ENTRY_DAYS = T.late_entry_days
 
 
 def _schedules(study: Study) -> dict[str, Schedule]:
@@ -90,12 +93,15 @@ def missed_visit(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
                     record_ids=tuple(d.record_id for d in doses),
                     calculation=(
-                        f"No visit record exists for {subject_id} {scheduled.label}, but dose "
-                        f"record {doses[0].record_id} was administered on "
-                        f"{doses[0].dose_date.describe()}. The visit occurred; the visit record "
-                        f"is missing. Whether it fell inside the window "
-                        f"({scheduled.opens.isoformat()} to {scheduled.closes.isoformat()}) "
-                        f"cannot be assessed without it."
+                        f"{scheduled.label}: no visit record; dose record "
+                        f"{doses[0].record_id} administered "
+                        f"{doses[0].dose_date.describe()}. Window "
+                        f"{scheduled.opens.isoformat()} to {scheduled.closes.isoformat()}."
+                    ),
+                    rationale=(
+                        "A dose record proves the visit happened, so this is a missing "
+                        "record rather than a missed visit. Whether it fell inside the "
+                        "window cannot be assessed without the visit record."
                     ),
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                 ))
@@ -109,11 +115,14 @@ def missed_visit(study: Study) -> list[Finding]:
                 subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
                 record_ids=(),
                 calculation=(
-                    f"{scheduled.describe()}. No visit record exists for {subject_id} and the "
-                    f"window closed on {scheduled.closes.isoformat()}, "
+                    f"{scheduled.describe()}. No visit record; window closed "
+                    f"{scheduled.closes.isoformat()}, "
                     f"{(study.as_of - scheduled.closes).days} days ago."
-                    + (f" The visit required a dose, so a scheduled administration was also "
-                       f"missed." if requires_dose else "")
+                    + (" Required assessments included a dose." if requires_dose else "")
+                ),
+                rationale=(
+                    "Absence of a record is only a finding once the window has shut; "
+                    "before that the visit is simply not due yet."
                 ),
                 classification=ClassificationProposal(
                     proposed=IMPORTANT if requires_dose else NOT_IMPORTANT,
@@ -172,6 +181,11 @@ def out_of_window_visit(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
                     record_ids=(record.record_id,),
                     calculation=f"{assessment.calculation} (record {record.record_id})",
+                    rationale=(
+                        "The recorded date does not place the visit inside or outside "
+                        "the window. Imputing a day and then issuing a verdict would "
+                        "fabricate a finding."
+                    ),
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                     evidence=evidence,
                 ))
@@ -192,9 +206,11 @@ def out_of_window_visit(study: Study) -> list[Finding]:
                 subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
                 record_ids=(record.record_id,),
                 calculation=(
-                    f"{assessment.calculation} (record {record.record_id}). "
-                    f"{resolved.explanation}"
+                    f"{assessment.calculation} (record {record.record_id}) "
+                    f"Governing protocol version: {resolved.version.label} "
+                    f"(consented {subject.consent_date.describe()})."
                 ),
+                rationale=resolved.explanation,
                 classification=ClassificationProposal(
                     proposed=NOT_IMPORTANT,
                     reasoning=(
@@ -218,10 +234,14 @@ def out_of_window_visit(study: Study) -> list[Finding]:
                     suppressed_by=f"deviation_log:{already.deviation_id}",
                     proposed_actions=(),
                     calculation=(
-                        f"{finding.calculation} This deviation is already recorded as "
-                        f"{already.deviation_id} (classified {already.classification!r} by "
-                        f"the investigator on the existing log entry), so it must not be "
-                        f"filed a second time."
+                        f"{finding.calculation} Already recorded as "
+                        f"{already.deviation_id}, classified "
+                        f"{already.classification!r}."
+                    ),
+                    rationale=(
+                        "The deviation is genuine but is already on the record. Filing "
+                        "it again double-reports and inflates the deviation rate the "
+                        "sponsor reports."
                     ),
                 )
             findings.append(finding)
@@ -238,9 +258,11 @@ def _duplicate_finding(subject_id, site, scheduled, records) -> Finding:
         subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
         record_ids=tuple(r.record_id for r in records),
         calculation=(
-            f"{len(records)} records exist for {subject_id} {scheduled.label}: {dates}. "
-            f"Neither is voided, so which date is authoritative is a question for the site. "
-            f"The visit must not be counted twice and a date must not be picked silently."
+            f"{len(records)} records for {scheduled.label}: {dates}. Neither is voided."
+        ),
+        rationale=(
+            "Which date is authoritative is a question for the site. The visit must "
+            "not be counted twice and a date must not be picked silently."
         ),
         proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
     )
@@ -279,13 +301,16 @@ def missing_assessment(study: Study) -> list[Finding]:
                 visit_id=scheduled.visit_id,
                 record_ids=(record.record_id,),
                 calculation=(
-                    f"{version.label} requires "
-                    f"{', '.join(scheduled.required_assessments)} at {scheduled.label}. "
-                    f"Record {record.record_id} ({record.visit_date.describe()}) records "
+                    f"{scheduled.label}: {version.label} requires "
+                    f"{', '.join(scheduled.required_assessments)}. Record "
+                    f"{record.record_id} ({record.visit_date.describe()}) records "
                     f"{', '.join(record.assessments_done) or 'nothing'}. "
-                    f"Missing: {', '.join(missing)}. "
+                    f"Missing: {', '.join(missing)}."
+                ),
+                rationale=(
                     f"{subject_id} consented under {version.label}, which is what makes "
-                    f"{'this' if len(missing) == 1 else 'these'} required."
+                    f"{', '.join(missing)} required here. The identical record for a "
+                    f"subject governed by an earlier version would be compliant."
                 ),
                 classification=ClassificationProposal(
                     proposed=NOT_IMPORTANT,
@@ -335,10 +360,12 @@ def dose_deviation(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=subject.site_id,
                     visit_id=record.visit_id, record_ids=(record.record_id,),
                     calculation=(
-                        f"Dose record {record.record_id} is dated "
-                        f"{record.dose_date.describe()}. Without a precise date the weight as "
-                        f"of that day cannot be resolved, so the expected dose cannot be "
-                        f"computed."
+                        f"Dose record {record.record_id} dated "
+                        f"{record.dose_date.describe()}."
+                    ),
+                    rationale=(
+                        "Without a precise date the weight as of that day cannot be "
+                        "resolved, so the expected dose cannot be computed."
                     ),
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                 ))
@@ -354,10 +381,11 @@ def dose_deviation(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=subject.site_id,
                     visit_id=record.visit_id, record_ids=(record.record_id,),
                     calculation=(
-                        f"Dose record {record.record_id} records "
-                        f"{record.raw_dose!r} {record.dose_unit!r} on {when.isoformat()}. "
-                        f"{expected.explanation}"
+                        f"Dose record {record.record_id}: {record.raw_dose!r} "
+                        f"{record.dose_unit!r} on {when.isoformat()}. Expected dose "
+                        f"not computable."
                     ),
+                    rationale=expected.explanation,
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                 ))
                 continue
@@ -377,10 +405,10 @@ def dose_deviation(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=subject.site_id,
                     visit_id=record.visit_id, record_ids=(record.record_id,),
                     calculation=(
-                        f"Expected {expected.dose} mg at {when.isoformat()} "
-                        f"({expected.explanation}) but dose record {record.record_id} cannot "
-                        f"be read: {problem}."
+                        f"Expected {expected.dose} mg on {when.isoformat()}; dose "
+                        f"record {record.record_id} cannot be read ({problem})."
                     ),
+                    rationale=expected.explanation,
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                 ))
                 continue
@@ -405,11 +433,16 @@ def dose_deviation(study: Study) -> list[Finding]:
                 subject_id=subject_id, site_id=subject.site_id,
                 visit_id=record.visit_id, record_ids=(record.record_id,),
                 calculation=(
-                    f"{expected.explanation} Administered {given} mg "
-                    f"(record {record.record_id}), which is {abs(difference)} mg "
-                    f"({percent}%) {direction} the expected dose. Tolerance is "
+                    f"Expected {expected.dose} mg (5 mg/kg x {expected.weight_used} kg "
+                    f"as of {when.isoformat()}, record {expected.weight_record_id}); "
+                    f"administered {given} mg (record {record.record_id}). Difference "
+                    f"{abs(difference)} mg, {percent}% {direction} expected. Tolerance "
                     f"+/-{DOSE_TOLERANCE * 100:.0f}%."
                 ),
+                rationale=(expected.explanation + " "
+                           + rationale_for("dose_tolerance") + " "
+                           + rationale_for("dose_important")),
+                threshold_applied=("dose_important" if important else "dose_tolerance"),
                 classification=ClassificationProposal(
                     proposed=IMPORTANT if important else NOT_IMPORTANT,
                     reasoning=(
@@ -447,17 +480,19 @@ def _withheld_dose_finding(subject, record, rule) -> Finding:
         subject_id=subject.subject_id, site_id=subject.site_id,
         visit_id=record.visit_id, record_ids=(record.record_id,),
         calculation=(
-            f"Dose record {record.record_id} on {record.dose_date.describe()} has "
-            f"dose_status 'Withheld' and no administered amount. The protocol schedules a "
-            f"dose at this visit and permits holding only for: {criteria}. A withheld dose "
-            f"that does not meet a stated hold criterion is a departure from the protocol "
-            f"and is therefore a deviation, which must be documented. "
-            f"ICH E6(R3) Section 2.5.3 permits a deviation made to eliminate an immediate "
-            f"hazard to the trial participant; where that applies, the deviation is "
-            f"documented but does NOT warrant a corrective action against the site. A "
-            f"clinical rationale is recorded on this record and is quoted below for the "
-            f"investigator and medical monitor to confirm -- it is deliberately not parsed "
-            f"to reach this verdict."
+            f"Dose record {record.record_id} on {record.dose_date.describe()}: "
+            f"dose_status 'Withheld', no administered amount. The protocol schedules a "
+            f"dose at this visit and permits holding only for: {criteria}. A withheld "
+            f"dose not meeting a stated hold criterion departs from the protocol. "
+            f"ICH E6(R3) Section 2.5.3 permits a deviation made to eliminate an "
+            f"immediate hazard to the participant; where it applies the deviation is "
+            f"documented but does NOT warrant a corrective action against the site."
+        ),
+        rationale=(
+            "A clinical rationale is recorded on this record and is quoted as evidence "
+            "for the investigator and medical monitor to confirm. It is deliberately "
+            "not parsed to reach this verdict: whether 2.5.3 applies is a clinical "
+            "judgement, and the coded dose_status is what drives the routing here."
         ),
         classification=ClassificationProposal(
             proposed=IMPORTANT,
@@ -527,12 +562,17 @@ def consent_sequence(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=subject.site_id,
                     visit_id=record.visit_id, record_ids=(record.record_id,),
                     calculation=(
-                        f"{subject_id} consented on {consent.describe()}. "
-                        f"{record.visit_label} (record {record.record_id}) is dated "
+                        f"Consent {consent.describe()}; {record.visit_label} "
+                        f"(record {record.record_id}) dated "
                         f"{record.visit_date.describe()}, "
-                        f"{gap if gap is not None else f'between {-high} and {-low}'} day(s) "
-                        f"before consent. Assessments recorded at that visit: "
+                        f"{gap if gap is not None else f'between {-high} and {-low}'} "
+                        f"day(s) before consent. Assessments performed: "
                         f"{', '.join(record.assessments_done) or 'none'}."
+                    ),
+                    rationale=(
+                        "A study procedure performed before informed consent is not a "
+                        "matter of degree: one day before consent is still before "
+                        "consent."
                     ),
                     classification=ClassificationProposal(
                         proposed=IMPORTANT,
@@ -561,11 +601,14 @@ def consent_sequence(study: Study) -> list[Finding]:
                     subject_id=subject_id, site_id=subject.site_id,
                     visit_id=record.visit_id, record_ids=(record.record_id,),
                     calculation=(
-                        f"{subject_id} consented on {consent.describe()}. "
-                        f"{record.visit_label} (record {record.record_id}) is dated "
-                        f"{record.visit_date.describe()}, which could be up to {-low} day(s) "
-                        f"before consent or up to {high} day(s) after it. Whether a procedure "
-                        f"preceded consent cannot be answered from these dates."
+                        f"Consent {consent.describe()}; {record.visit_label} "
+                        f"(record {record.record_id}) dated "
+                        f"{record.visit_date.describe()} -- between {-low} day(s) before "
+                        f"and {high} day(s) after consent."
+                    ),
+                    rationale=(
+                        "Whether the procedure preceded consent cannot be answered from "
+                        "these dates."
                     ),
                     proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
                 ))
@@ -603,7 +646,11 @@ def eligibility_breach(study: Study) -> list[Finding]:
                 f"({subject.screen_failure_reason!r}) but is recorded as "
                 f"{subject.enrollment_status!r}"
                 + (f" with {len(doses)} dosing record(s)." if doses else ".")
-                + " A subject who failed eligibility must not be enrolled or dosed."
+            ),
+            rationale=(
+                "A subject who failed eligibility must not be enrolled or dosed. The "
+                "inverse is not a finding: a screen failure who was never enrolled is "
+                "simply a screen failure."
             ),
             classification=ClassificationProposal(
                 proposed=IMPORTANT,
@@ -680,12 +727,16 @@ def systemic_pattern(study: Study, findings: list[Finding]) -> tuple[list[Findin
                 f"{len(group)} of {len(cohort)} enrolled subjects at {site_id} "
                 f"({share * 100:.0f}%) fell outside the {label} window: "
                 f"{', '.join(subjects)}. "
-                + " ".join(f.calculation.split(".")[0] + "." for f in group[:4])
-                + f" A window missed by most of a site's subjects indicates the window is "
-                  f"too tight for the site's operating conditions, not that {len(group)} "
-                  f"separate errors occurred. Filing {len(group)} deviation reports would be "
-                  f"the wrong remediation and would hide the real finding."
+                + " ".join(f.calculation.split(";")[0] + ";" for f in group[:4])
             ),
+            rationale=(
+                f"A window missed by most of a site's subjects indicates the window is "
+                f"too tight for the site's operating conditions, not that {len(group)} "
+                f"separate errors occurred. Filing {len(group)} deviation reports would "
+                f"be the wrong remediation and would hide the real finding. "
+                + rationale_for("systemic_min_subjects")
+            ),
+            threshold_applied="systemic_min_subjects",
             classification=ClassificationProposal(
                 proposed=IMPORTANT,
                 reasoning=(
@@ -727,9 +778,12 @@ def unattributable_record(study: Study) -> list[Finding]:
             calculation=(
                 f"Visit record {record.record_id} ({record.visit_label}, "
                 f"{record.visit_date.describe()}, {record.site_id}) has subject_id "
-                f"{record.raw_subject_id!r}. There is no defensible way to determine whose "
-                f"visit this is, and attributing it by site or proximity would put a "
-                f"deviation on the wrong participant's record."
+                f"{record.raw_subject_id!r}."
+            ),
+            rationale=(
+                "There is no defensible way to determine whose visit this is. "
+                "Attributing it by site or proximity would put a deviation on the "
+                "wrong participant's record."
             ),
             proposed_actions=(ProposedAction.ESCALATE_TO_MEDICAL_MONITOR,
                               ProposedAction.RAISE_SITE_QUERY),
@@ -745,9 +799,11 @@ def unattributable_record(study: Study) -> list[Finding]:
             visit_id=record.visit_id, record_ids=(record.record_id,),
             calculation=(
                 f"Visit record {record.record_id} references subject "
-                f"{record.raw_subject_id!r}, which does not appear in subjects.json. "
-                f"Either the subject is missing from the enrolment file or the identifier "
-                f"is wrong; both are questions for the site."
+                f"{record.raw_subject_id!r}, absent from subjects.json."
+            ),
+            rationale=(
+                "Either the subject is missing from the enrolment file or the "
+                "identifier is wrong; both are questions for the site."
             ),
             proposed_actions=(ProposedAction.RAISE_SITE_QUERY,),
         ))
@@ -793,15 +849,19 @@ def site_data_quality(study: Study, findings: list[Finding]) -> list[Finding]:
             results.append(Finding(
                 detector="site_data_quality",
                 family=Family.DATA_QUALITY,
-                verdict=Verdict.NOT_ASSESSABLE,
+                verdict=None,
                 site_id=worst_site,
                 calculation=(
                     f"{worst_site} accounts for {worst_count} of {len(unassessable)} "
                     f"unassessable records ({share:.0f}%). Breakdown: "
                     + ", ".join(f"{site} {count}" for site, count in sorted(by_site.items()))
-                    + ". This is a data quality finding about the site, not a protocol "
-                      "deviation against any participant, and it must not be filed in the "
-                      "deviation log."
+                    + "."
+                ),
+                rationale=(
+                    "A data quality finding about the site, not a protocol deviation "
+                    "against any participant. It must not be filed in the deviation "
+                    "log: doing so would inflate the deviation rate the sponsor "
+                    "reports to the regulator."
                 ),
                 proposed_actions=(ProposedAction.OPEN_CAPA,),
             ))
@@ -812,14 +872,18 @@ def site_data_quality(study: Study, findings: list[Finding]) -> list[Finding]:
         results.append(Finding(
             detector="site_data_quality",
             family=Family.DATA_QUALITY,
-            verdict=Verdict.COMPLIANT,
+            verdict=None,
             site_id=sites[0] if len(sites) == 1 else None,
             calculation=(
-                f"{normalised} record(s) could be matched to a subject only after "
-                f"normalising the identifier format"
-                + (f", all at {sites[0]}" if len(sites) == 1 else "")
-                + ". The join succeeded, so no assessment was lost, but a site writing the "
-                  "same participant several ways is a monitoring signal in its own right."
+                f"{normalised} record(s) matched to a subject only after normalising "
+                f"the identifier format"
+                + (f", all at {sites[0]}" if len(sites) == 1 else "") + "."
+            ),
+            rationale=(
+                "The join succeeded, so no assessment was lost. A site writing the "
+                "same participant several ways is a monitoring signal in its own "
+                "right, and the count of records that matched only after "
+                "normalisation is the finding."
             ),
             proposed_actions=(ProposedAction.OPEN_CAPA,),
         ))
@@ -837,15 +901,19 @@ def site_data_quality(study: Study, findings: list[Finding]) -> list[Finding]:
         results.append(Finding(
             detector="site_data_quality",
             family=Family.DATA_QUALITY,
-            verdict=Verdict.COMPLIANT,
+            verdict=None,
             site_id=site_id,
             calculation=(
-                f"{site_id} entered {len(late)} of {len(values)} visit records more than "
-                f"{LATE_ENTRY_DAYS} days after the visit (median "
-                f"{sorted(values)[len(values) // 2]} days, maximum {max(values)}). "
-                f"Late entry lowers the reliability of the data and is a monitoring signal, "
-                f"but it is not a protocol deviation and must not be filed as one."
+                f"{site_id} entered {len(late)} of {len(values)} visit records more "
+                f"than {LATE_ENTRY_DAYS} days after the visit (median "
+                f"{sorted(values)[len(values) // 2]} days, maximum {max(values)})."
             ),
+            rationale=(
+                "Late entry lowers the reliability of the data and is a monitoring "
+                "signal, but it is not a protocol deviation and must not be filed as "
+                "one. " + rationale_for("late_entry_days")
+            ),
+            threshold_applied="late_entry_days",
             proposed_actions=(ProposedAction.OPEN_CAPA,),
         ))
 
@@ -867,6 +935,48 @@ DETECTORS = (
 )
 
 
+def consolidate_site_queries(findings: list[Finding]) -> list[Finding]:
+    """One query per record, not one per detector that noticed it.
+
+    A partial date on a visit is noticed by the timing detector, the dose
+    detector and the consent detector, and each would raise its own query about
+    the same record. A site receiving three separate questions about one row is
+    a system failing at the human end of the loop, however correct each question
+    is on its own.
+
+    The findings are not merged -- each keeps its own verdict and reasoning. Only
+    the query action is consolidated onto the first finding for that record, so
+    exactly one goes out.
+    """
+    seen: dict[str, str] = {}
+    result: list[Finding] = []
+    for finding in findings:
+        actions = list(finding.proposed_actions)
+        if ProposedAction.RAISE_SITE_QUERY in actions:
+            # The unit is the visit occasion, not the row. A visit record and
+            # its dose record are different rows describing one event, and a
+            # site expects one question about that event.
+            if finding.subject_id and finding.visit_id:
+                key = f"{finding.subject_id}/{finding.visit_id}"
+            elif finding.record_ids:
+                key = "|".join(sorted(finding.record_ids))
+            else:
+                result.append(finding)
+                continue
+            owner = seen.setdefault(key, finding.finding_id)
+            if owner != finding.finding_id:
+                actions.remove(ProposedAction.RAISE_SITE_QUERY)
+                finding = replace(
+                    finding, proposed_actions=tuple(actions),
+                    rationale=(finding.rationale + " The site query for "
+                               f"{key} is raised once, on {owner}.").strip(),
+                )
+                result.append(finding)
+                continue
+        result.append(finding)
+    return result
+
+
 def run_all(study: Study) -> list[Finding]:
     """Every detector, then the aggregating ones that depend on their output."""
     findings: list[Finding] = []
@@ -875,6 +985,7 @@ def run_all(study: Study) -> list[Finding]:
 
     findings = assign_ids(findings)
     patterns, findings = systemic_pattern(study, findings)
+    findings = consolidate_site_queries(findings)
     quality = site_data_quality(study, findings)
 
     numbered = assign_ids(patterns + quality, start=len(findings) + 1)

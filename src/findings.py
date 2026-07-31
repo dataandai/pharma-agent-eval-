@@ -79,10 +79,26 @@ class ClassificationProposal:
 
 @dataclass(frozen=True)
 class Finding:
+    """A verdict is a statement about one record's compliance with the protocol.
+
+    Site-level observations make no such statement -- "SITE-03 enters data 40
+    days late" is not a claim that some visit was or was not compliant -- so
+    their verdict is `None`. That keeps the rule "compliance is the absence of a
+    finding" true instead of quietly contradicted by a stream of COMPLIANT
+    findings.
+
+    `calculation` is terse and factual: figures, record IDs, the comparison. It
+    is what goes in the record. `rationale` is the explanation of why it matters
+    and what a naive reading would get wrong; it is for the reviewer, and it
+    stays out of the filed text.
+    """
+
     detector: str
     family: Family
-    verdict: Verdict
+    verdict: Verdict | None
     calculation: str
+    rationale: str = ""
+    threshold_applied: str | None = None
     subject_id: str | None = None
     site_id: str | None = None
     visit_id: str | None = None
@@ -115,7 +131,9 @@ class Finding:
             "finding_id": self.finding_id,
             "detector": self.detector,
             "family": self.family.value,
-            "verdict": self.verdict.value,
+            "verdict": self.verdict.value if self.verdict else None,
+            "rationale": self.rationale,
+            "threshold_applied": self.threshold_applied,
             "subject_id": self.subject_id,
             "site_id": self.site_id,
             "visit_id": self.visit_id,

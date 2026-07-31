@@ -170,9 +170,32 @@ either, and §2.5.3 applicability is a clinical judgement.
 
 **Six illustrative thresholds drive every verdict** — dose tolerance 10%,
 important at 20%, systemic pattern at 3 subjects and 50% of a site, late entry at
-14 days, plausible weight 30–250 kg. They are stated in
-[src/detectors.py](src/detectors.py) and in the finding text so a reader can see
-exactly what drove an answer. A qualified clinical team would set them.
+14 days, plausible weight 30–250 kg. They are the weakest part of the system and
+the part a clinical team would replace first, so they are collected in
+[src/thresholds.py](src/thresholds.py) rather than scattered through the
+detectors — each with its basis and what changes if it moves. A finding that
+depends on one **names it** (`threshold_applied`) and quotes its provenance, so a
+reader can disagree precisely rather than in general. Override with a
+`thresholds.json` beside the data.
+
+**A finding separates what is filed from what is explained.** `calculation` is
+terse and factual — figures, record IDs, the comparison — and is what goes into
+the record. `rationale` carries why it matters and what a naive reading gets
+wrong, and is for the reviewer. *Given up:* the filed text no longer argues its
+own case. *Bought:* a monitor reading fifty deviation entries is not reading
+fifty essays.
+
+**One site query per visit occasion, not one per detector.** A partial date is
+noticed by the timing, dose and consent detectors, each of which would raise its
+own query about the same event. The findings stay separate — each keeps its own
+verdict and reasoning — but the query action is consolidated onto one of them.
+*Given up:* a detector's output no longer maps one-to-one onto an outbound
+action. *Bought:* the site receives one question about one visit.
+
+**Site-level observations carry no verdict.** A verdict states whether one record
+complied with the protocol; "SITE-03 enters data 40 days late" makes no such
+claim, so its `verdict` is `None`. Otherwise the rule *compliance is the absence
+of a finding* would be quietly contradicted by a stream of `COMPLIANT` findings.
 
 **15 subjects, not 12.** Twelve cannot carry twelve traps, a four-subject
 systemic pattern and a four-subject clean control group. A dataset where
@@ -182,6 +205,17 @@ everything is a finding proves nothing.
 authorisation, durable transactions, EDC integration and an electronic signature
 compliant with 21 CFR Part 11 are all out of scope. The approval gate here
 records who approved and what they typed; it does not authenticate them.
+
+**The ground truth is not a fully independent oracle, and cannot be made one
+here.** `docs/DATA_TRAPS.md` and `docs/data_traps.json` are rendered from the
+same registry the data is generated from, so they cannot drift — but they also
+cannot *disagree*: plant the wrong thing and the documentation describes the
+wrong thing confidently. That is exactly how three defects survived Phase 1. The
+partial mitigation is a verification pass that re-opens the written files and
+checks every claim the registry makes — that each named record exists, each named
+subject is enrolled, and each subject declared clean really carries no Layer A
+damage. It stops the registry asserting something the data does not contain. It
+does not stop the registry and the data being wrong together.
 
 ## Layout
 

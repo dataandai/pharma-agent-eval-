@@ -74,7 +74,7 @@ def main() -> int:
             accounted.update(f.finding_id for f in candidates)
             continue
 
-        hit = [f for f in candidates if f.verdict.value == expectation["verdict"]]
+        hit = [f for f in candidates if f.verdict and f.verdict.value == expectation["verdict"]]
         if not hit:
             missed.append(expectation)
             continue
@@ -118,7 +118,7 @@ def main() -> int:
     print("DETECTOR OUTPUT")
     print("=" * 78)
     by_detector: dict[tuple[str, str], int] = Counter(
-        (f.detector, f.verdict.value) for f in findings
+        (f.detector, f.verdict.value if f.verdict else "observation") for f in findings
     )
     for (detector, verdict), count in sorted(by_detector.items()):
         print(f"  {detector:<24} {verdict:<16} {count}")

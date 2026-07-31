@@ -79,7 +79,9 @@ def test_the_hazard_verdict_is_not_parsed_out_of_the_free_text(findings):
     evidence for the investigator, never read to reach a verdict."""
     finding = for_subject(findings, "S-005", "V3", "dose_deviation")[0]
     assert any("neutropenia" in e.lower() for e in finding.evidence)
-    assert "deliberately not parsed" in finding.calculation
+    # The reasoning belongs to the reviewer, not to the filed record.
+    assert "deliberately not parsed" in finding.rationale
+    assert "neutropenia" not in finding.calculation.lower()
 
 
 # --------------------------------------------------------------------------
@@ -144,11 +146,56 @@ def test_data_quality_findings_never_propose_a_deviation_record(findings):
             assert ProposedAction.LOG_DEVIATION not in finding.proposed_actions
 
 
-def test_not_assessable_findings_route_to_a_query_not_a_deviation(findings):
+def test_not_assessable_findings_never_route_to_the_deviation_log(findings):
     for finding in findings:
         if finding.verdict is Verdict.NOT_ASSESSABLE:
             assert ProposedAction.LOG_DEVIATION not in finding.proposed_actions
-            assert finding.proposed_actions, finding.finding_id
+
+
+def test_every_unassessable_visit_occasion_gets_exactly_one_query(findings):
+    """A visit record and its dose record are different rows describing one
+    event. Three detectors noticing the same bad date must not send the site
+    three questions about it -- but the event must still be asked about once."""
+    occasions: dict[str, list] = {}
+    for finding in findings:
+        if finding.verdict is not Verdict.NOT_ASSESSABLE:
+            continue
+        key = f"{finding.subject_id}/{finding.visit_id}"
+        occasions.setdefault(key, []).append(finding)
+
+    for key, group in occasions.items():
+        queries = [f for f in group
+                   if ProposedAction.RAISE_SITE_QUERY in f.proposed_actions]
+        assert len(queries) == 1, (
+            f"{key} produced {len(queries)} site queries: "
+            f"{[f.finding_id for f in queries]}"
+        )
+        for finding in group:
+            if finding not in queries:
+                assert queries[0].finding_id in finding.rationale
+
+
+def test_site_level_observations_carry_no_verdict(findings):
+    """A verdict states whether one record complied with the protocol. "SITE-03
+    enters data late" makes no such claim, so it has none -- otherwise the rule
+    "compliance is the absence of a finding" is quietly contradicted by a stream
+    of COMPLIANT findings."""
+    observations = [f for f in findings if f.detector == "site_data_quality"]
+    assert observations
+    assert all(f.verdict is None for f in observations)
+    assert all(f.verdict is not Verdict.COMPLIANT for f in findings)
+
+
+def test_findings_that_depend_on_a_threshold_name_it(findings):
+    """Six invented numbers drive every verdict. A reader must be able to see
+    which one drove this answer, and disagree with it precisely."""
+    from src.thresholds import RATIONALE
+
+    named = [f for f in findings if f.threshold_applied]
+    assert named
+    for finding in named:
+        assert finding.threshold_applied in RATIONALE
+        assert "illustrative threshold" in finding.rationale
 
 
 def test_findings_are_deterministic_and_uniquely_identified(findings):

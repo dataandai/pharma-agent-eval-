@@ -302,3 +302,27 @@ def test_subject_id_drift_is_confined_to_site_03(dataset):
     }
     assert drifted
     assert drifted <= S007_ALIASES
+
+
+def test_the_registry_verification_catches_a_fabricated_claim():
+    """The ground truth is rendered from the registry the data is built from, so
+    it cannot disagree with the generator. This pass re-reads the written files
+    and at least stops the registry naming something that is not there."""
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location(
+        "gen", ROOT / "scripts" / "generate_data.py")
+    gen = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(gen)
+
+    assert gen.verify_registry(DATA) == []      # nothing planted yet
+
+    gen.ISSUES.append({
+        "layer": "B", "code": "FAKE", "file": "visits.json",
+        "records": ["VR-9999"], "subject": "S-999", "verdict": "deviation",
+        "routing": "-", "note": "-",
+        "expect": [gen.expectation("S-999", "V2", "deviation")],
+    })
+    problems = gen.verify_registry(DATA)
+    assert any("VR-9999" in p for p in problems)
+    assert any("S-999" in p for p in problems)

@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from collections import Counter, defaultdict
 from datetime import date, timedelta
 from decimal import Decimal
@@ -1209,6 +1210,78 @@ def render_data_traps(builder: Builder, layer_a: LayerA, stats: dict) -> str:
     return "\n".join(lines)
 
 
+def verify_registry(data_dir: Path) -> list[str]:
+    """Check the registry's claims against the files that were actually written.
+
+    DATA_TRAPS is rendered from the same registry the data is built from, which
+    means it cannot drift -- but it also means it cannot *disagree*. Plant the
+    wrong thing and it documents the wrong thing confidently.
+
+    This pass re-opens the written JSON and checks that every record ID the
+    registry names exists, and every subject it names is in the enrolment file.
+    It does not make the ground truth independent, but it stops the registry
+    asserting something the data does not contain.
+    """
+    problems: list[str] = []
+
+    def load(name):
+        return json.loads((data_dir / name).read_text(encoding="utf-8"))
+
+    known_ids: set[str] = set()
+    for name, field in (("visits.json", "visit_record_id"),
+                        ("dosing.json", "dosing_record_id"),
+                        ("vitals.json", "vitals_record_id"),
+                        ("deviation_log.json", "deviation_id")):
+        known_ids.update(str(row[field]) for row in load(name))
+
+    subjects = {row["subject_id"] for row in load("subjects.json")}
+    id_pattern = re.compile(r"\b(?:VR|DR|VT|DEV)-\d{4}\b")
+
+    for issue in ISSUES:
+        for reference in issue["records"]:
+            for record_id in id_pattern.findall(str(reference)):
+                if record_id not in known_ids:
+                    problems.append(
+                        f"{issue['code']}: names record {record_id}, which is not in "
+                        f"any generated file"
+                    )
+        for expectation in issue["expect"]:
+            subject_id = expectation["subject_id"]
+            if subject_id and subject_id not in subjects:
+                problems.append(
+                    f"{issue['code']}: expects a verdict for {subject_id}, who is not "
+                    f"in subjects.json"
+                )
+            if expectation["verdict"] not in ("deviation", "compliant", "not_assessable"):
+                problems.append(
+                    f"{issue['code']}: unknown expected verdict "
+                    f"{expectation['verdict']!r}"
+                )
+
+    # Every subject declared clean must actually be free of Layer A damage.
+    for name, id_field in (("visits.json", "visit_record_id"),
+                           ("vitals.json", "vitals_record_id"),
+                           ("dosing.json", "dosing_record_id")):
+        for row in load(name):
+            if row.get("subject_id") not in CLEAN_SUBJECTS:
+                continue
+            for key, value in row.items():
+                if key.endswith("date") and isinstance(value, str):
+                    try:
+                        date.fromisoformat(value)
+                    except ValueError:
+                        problems.append(
+                            f"clean subject {row['subject_id']}: {row[id_field]} has "
+                            f"{key}={value!r}, which is not a full ISO date"
+                        )
+            if name == "vitals.json" and "weight_unit" not in row:
+                problems.append(
+                    f"clean subject {row['subject_id']}: {row[id_field]} has no "
+                    f"weight_unit"
+                )
+    return problems
+
+
 def write_json(path: Path, payload) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -1356,6 +1429,20 @@ def main() -> None:
     })
 
     print(stats["summary_text"])
+
+    problems = verify_registry(DATA)
+    print()
+    print("GROUND TRUTH VERIFICATION (registry claims re-checked against the "
+          "written files)")
+    if problems:
+        for problem in problems:
+            print(f"  MISMATCH  {problem}")
+        raise SystemExit(f"\n{len(problems)} registry claim(s) do not match the "
+                         f"generated data.")
+    print(f"  {len(ISSUES)} planted issues, "
+          f"{sum(len(i['expect']) for i in ISSUES)} expectations, all consistent "
+          f"with the data on disk.")
+
     print()
     print(f"Wrote 6 files to {DATA} and docs/DATA_TRAPS.md")
 
