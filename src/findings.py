@@ -19,7 +19,13 @@ deviation inflates the deviation rate the sponsor reports to the regulator.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import StrEnum
+try:
+    from enum import StrEnum
+except Exception:  # pragma: no cover - compatibility for Python <3.11
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
 from typing import Iterable
 
 from src.verdicts import Verdict
