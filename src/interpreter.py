@@ -16,7 +16,14 @@ import json
 import os
 import re
 from dataclasses import dataclass
-from enum import StrEnum
+try:
+    # Python 3.11+ provides StrEnum
+    from enum import StrEnum
+except Exception:  # pragma: no cover - provides compatibility for older Pythons
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
 
 MODEL_ID = "claude-haiku-4-5-20251001"
 
