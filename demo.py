@@ -4,9 +4,16 @@ Runs the same graph the Streamlit app does, with the rule-based interpreter,
 so it needs no API key and no network.
 """
 
+import sys
 from pathlib import Path
 
-from src.graph.builder import (
+# The findings use en and em dashes. A Windows console defaults to a codepage
+# that cannot encode them, which turns the whole walkthrough into mojibake --
+# and this is the first command anyone runs.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
+from src.graph.builder import (  # noqa: E402
     build_agent_graph,
     initial_state,
     pending_interrupt,

@@ -16,7 +16,7 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 from src.dates import ClinicalDate, parse_clinical_date
 from src.dosing import JsonWeightSource, WeightSource, normalise_subject_id

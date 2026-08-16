@@ -1,8 +1,16 @@
 # Protocol Deviation Agent
 
-A program that checks clinical trial patient records against the trial's
-rulebook, finds the departures — and asks a human to decide about every single
-one, instead of acting on its own.
+The Protocol Deviation Agent helps clinical teams find and document departures
+from a trial's protocol faster and with less manual work. It runs precise,
+deterministic checks on study data to surface potential issues, explains what
+happened and why, and prepares a clear recommended action for a human reviewer.
+We use lightweight "agents" to coordinate the rule-based detectors and the
+conversational interface: the agent routes requests, runs the checks, and
+packages verified results, while a language model only helps determine what the
+user is asking. Crucially, nothing is written to official records until a named
+human reviews and explicitly approves — preserving auditability and
+accountability. You can interact via the web UI (`streamlit run app.py`) or an
+operational worker (for example, an AWS SQS-backed agent).
 
 ---
 
@@ -99,7 +107,7 @@ in a strictly regulated field.
   prepared rationale and all the relevant data in one place.
 - **Data managers**: data quality problems and genuine protocol departures are
   kept apart. That matters — filing a mistyped date as a departure needlessly
-  inflates the statistic the sponsor reports to the regulator.
+  inflates the deviation rate the sponsor reports to the regulator.
 - **Patients**, indirectly: the less attention goes to noise, the more is left
   for real safety signals.
 
@@ -110,7 +118,8 @@ in a strictly regulated field.
 > documents published on clinicaltrials.gov. All data is synthetic. Classification
 > thresholds are illustrative and would require validation by a qualified clinical
 > team before any real use. What is demonstrated is the oversight architecture:
-> deterministic detection, surfaced ambiguity, and a human gate on every write.
+> deterministic detection, surfaced ambiguity, and a human before every single
+> write.
 
 **All the data is invented.** There is not one real data point about one real
 patient in it. A generator produces the sample study deliberately containing the
@@ -151,6 +160,84 @@ No API key is needed. Without `ANTHROPIC_API_KEY` the agent uses a deterministic
 rule-based intent classifier; with one it uses Claude Haiku 4.5. Either way the
 LLM classifies *intent only* — every figure the user sees comes from a tool
 result.
+
+## AWS Agent Core and Eval harness
+
+This repository includes a small scaffold to run the agent as a worker that
+consumes messages from AWS SQS and an evaluation harness for automated runs.
+
+- `src/aws_agent_core_adapter.py` — a lightweight SQS poller that expects JSON
+  messages like `{ "thread_id": "aws-1", "message": "review S-004" }`.
+- `scripts/aws_agent_runner.py` — CLI wrapper to run the SQS worker.
+- `scripts/eval_harness.py` — runs a set of sample prompts through the graph
+  and prints timing and responses as JSON.
+
+The adapter is intentionally minimal: it logs responses to stdout and deletes
+messages after handling them. In production you may replace the print with an
+SNS publish, write to S3, or push to a response queue and add dead-letter
+handling on failures.
+
+Run the eval harness quickly with:
+```bash
+python scripts/eval_harness.py
+```
+
+Run the AWS worker after installing `boto3` and setting AWS credentials and
+`AWS_SQS_QUEUE_URL` (or pass `--queue-url`):
+```bash
+python scripts/aws_agent_runner.py --queue-url https://sqs....
+```
+
+## Sample use case — live with the included sample data
+
+The repository contains deterministic sample study data in the `data/` folder
+(see e.g. [data/subjects.json](data/subjects.json), [data/visits.json](data/visits.json),
+and [data/vitals.json](data/vitals.json)). There are a few quick ways to exercise
+the system with those samples.
+
+1) Run the evaluation harness (fast, non-interactive):
+
+```bash
+python scripts/generate_data.py   # populate the data/ folder (deterministic)
+python reset_sandbox.py          # clear any previous proposals/sandbox state
+python scripts/eval_harness.py   # runs example prompts and prints JSON responses
+```
+
+The harness runs prompts such as `review S-004`, `review S-009` and
+`review SITE-02` against the sample data and prints timings and assistant
+responses. These subjects (`S-004`, `S-009`, `S-005`) exist in the sample set
+so the output is live immediately.
+
+2) Run the interactive UI and try the same prompts visually:
+
+```bash
+streamlit run app.py
+```
+
+Use the chat input or the sidebar examples (try `review S-004`) to see drafted
+actions, proposed classifications, and the approval card that requires a
+human verbatim confirmation before any write.
+
+3) Simulate operational use with the SQS worker (send one JSON message):
+
+Example message body to send to your SQS queue:
+
+```json
+{"thread_id": "sample-1", "message": "review S-004"}
+```
+
+Run the worker to consume the message and print the agent response:
+
+```bash
+python scripts/aws_agent_runner.py --queue-url https://sqs.REGION.amazonaws.com/123456789012/your-queue
+```
+
+Notes:
+- Use `python scripts/diff_findings.py` to compare detector output against the
+  planted ground truth in `docs/data_traps.json`.
+- The eval harness and the UI use the same compiled graph and deterministic
+  detectors, so results are consistent between modes.
+
 
 ## Three verdicts, not two
 

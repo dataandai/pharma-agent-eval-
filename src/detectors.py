@@ -20,9 +20,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 from dataclasses import replace
-from datetime import date
 from decimal import Decimal
-from typing import Iterable
 
 from src.dates import days_between
 from src.dosing import normalise_dose
@@ -205,6 +203,7 @@ def out_of_window_visit(study: Study) -> list[Finding]:
                 verdict=Verdict.DEVIATION,
                 subject_id=subject_id, site_id=site, visit_id=scheduled.visit_id,
                 record_ids=(record.record_id,),
+                days_out=days,
                 calculation=(
                     f"{assessment.calculation} (record {record.record_id}) "
                     f"Governing protocol version: {resolved.version.label} "
@@ -725,9 +724,16 @@ def systemic_pattern(study: Study, findings: list[Finding]) -> tuple[list[Findin
             record_ids=tuple(rid for f in group for rid in f.record_ids),
             calculation=(
                 f"{len(group)} of {len(cohort)} enrolled subjects at {site_id} "
-                f"({share * 100:.0f}%) fell outside the {label} window: "
-                f"{', '.join(subjects)}. "
-                + " ".join(f.calculation.split(";")[0] + ";" for f in group[:4])
+                f"({share * 100:.0f}%) fell outside the {label} window. "
+                + "; ".join(
+                    f"{f.subject_id} "
+                    + (f"{abs(f.days_out)} day(s) "
+                       f"{'late' if f.days_out > 0 else 'early'}"
+                       if f.days_out is not None else "outside the window")
+                    + (f" ({f.record_ids[0]})" if f.record_ids else "")
+                    for f in sorted(group, key=lambda x: x.subject_id or "")
+                )
+                + "."
             ),
             rationale=(
                 f"A window missed by most of a site's subjects indicates the window is "

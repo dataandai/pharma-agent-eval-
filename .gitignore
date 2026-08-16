@@ -4,3 +4,14 @@ __pycache__/
 .pytest_cache/
 .streamlit/
 .env
+
+# Credentials -- never commit
+*.key
+.env
+geminiforllmnodes.txt
+**/api_key*
+**/*_secret*
+
+# Sandbox is runtime state: it gets dirty on every run and can contain
+# approval text. The directory is recreated by reset_sandbox.py.
+sandbox/*.json

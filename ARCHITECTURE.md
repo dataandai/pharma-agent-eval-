@@ -92,3 +92,12 @@ Study ──► detectors ──► Findings (verdict + calculation + proposed c
 
 Nothing crosses the `gate` line without a human turn, and nothing below it runs
 if the confirmation is not accepted.
+
+## Deployment note — AWS agent core
+
+An optional, lightweight AWS Agent Core adapter has been added as a scaffold
+to let this system run as a worker consuming SQS messages (`src/aws_agent_core_adapter.py`).
+It does not change any architectural invariant: the adapter simply turns a
+queue message into a `run_turn()` call against the compiled graph and emits
+the agent response. The gate invariant (human verbatim approval before any
+write) remains enforced by the graph and the single `apply` node.

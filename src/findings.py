@@ -103,6 +103,10 @@ class Finding:
     site_id: str | None = None
     visit_id: str | None = None
     record_ids: tuple[str, ...] = ()
+    # How far outside its window a visit fell, when that is a single number.
+    # Structured so the aggregating detectors can quote it without parsing
+    # another detector's prose back out of a string.
+    days_out: int | None = None
     classification: ClassificationProposal | None = None
     proposed_actions: tuple[ProposedAction, ...] = ()
     evidence: tuple[str, ...] = ()
@@ -138,6 +142,7 @@ class Finding:
             "site_id": self.site_id,
             "visit_id": self.visit_id,
             "record_ids": list(self.record_ids),
+            "days_out": self.days_out,
             "calculation": self.calculation,
             "classification": self.classification.to_dict() if self.classification else None,
             "proposed_actions": [a.value for a in self.proposed_actions],

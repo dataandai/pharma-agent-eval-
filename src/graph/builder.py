@@ -298,11 +298,15 @@ def approval_card(draft) -> dict[str, Any]:
 
 
 def _summarise(findings: list[dict]) -> str:
+    """Site-level observations carry no verdict, so `None` is a real value here
+    and must not reach `sorted()` alongside strings."""
     if not findings:
         return "No findings."
     counts: dict[str, int] = {}
     for finding in findings:
-        counts[finding["verdict"]] = counts.get(finding["verdict"], 0) + 1
+        counts[finding.get("verdict") or "site observation"] = (
+            counts.get(finding.get("verdict") or "site observation", 0) + 1
+        )
     return ("Verdicts: "
             + ", ".join(f"{count} {verdict}" for verdict, count in sorted(counts.items()))
             + ".")
