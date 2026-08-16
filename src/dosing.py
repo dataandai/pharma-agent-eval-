@@ -1,4 +1,4 @@
-3"""Dose normalisation with provenance.
+"""Dose normalisation with provenance.
 
 A conversion factor that depends on a date, where using the wrong date
 produces a plausible, wrong answer.
