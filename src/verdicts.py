@@ -11,7 +11,14 @@ to a site query rather than to a deviation record.
 
 from __future__ import annotations
 
-from enum import StrEnum
+try:
+    from enum import StrEnum
+except Exception:  # pragma: no cover - compatibility for Python <3.11
+    from enum import Enum
+
+    class StrEnum(str, Enum):
+        pass
+
 from typing import Iterable
 
 
