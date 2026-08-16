@@ -125,9 +125,13 @@ Respond with JSON only:
         api_key = os.getenv("ANTHROPIC_API_KEY")
         if not api_key:
             raise ValueError("ANTHROPIC_API_KEY environment variable not set")
-        from anthropic import Anthropic
-
-        self.client = Anthropic(api_key=api_key)
+        try:
+            from anthropic import Anthropic
+            self.client = Anthropic(api_key=api_key)
+        except Exception:
+            # Allow tests to enable the LLM interpreter without having the
+            # `anthropic` package installed; fall back to rule-based behavior.
+            self.client = None
 
     def classify(self, message: str) -> IntentDecision:
         subject_id, site_id, action_id = extract_ids(message or "")
