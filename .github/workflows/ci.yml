@@ -35,6 +35,11 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      - name: Generate and reset sample data
+        run: |
+          python scripts/generate_data.py
+          python reset_sandbox.py
+
       - name: Run tests
         run: |
           python -m pytest -q

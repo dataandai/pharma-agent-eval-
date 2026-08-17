@@ -36,8 +36,8 @@ class TestResult(Enum):
 
 
 @dataclass
-class AssertionError:
-    """Assertion failure details for reporting."""
+class AssertionFailure:
+    """Details of a test assertion failure."""
     assertion: str
     expected: Any
     actual: Any
@@ -110,7 +110,7 @@ class EvalResult:
     result: TestResult
     assertions_passed: int = 0
     assertions_failed: int = 0
-    failures: list[AssertionError] | None = None
+    failures: list[AssertionFailure] | None = None
     response: str | None = None
     time_s: float = 0.0
 
@@ -136,7 +136,7 @@ def evaluate_single_case(graph, case: EvalTestCase) -> EvalResult:
             passed += 1
         else:
             failed += 1
-            failures.append(AssertionError(
+            failures.append(AssertionFailure(
                 assertion="intent_classification",
                 expected=case.expected_intent,
                 actual=detected_intent,
@@ -150,7 +150,7 @@ def evaluate_single_case(graph, case: EvalTestCase) -> EvalResult:
             passed += 1
         else:
             failed += 1
-            failures.append(AssertionError(
+            failures.append(AssertionFailure(
                 assertion="response_nonempty",
                 expected="response present",
                 actual="empty or missing",
@@ -165,7 +165,7 @@ def evaluate_single_case(graph, case: EvalTestCase) -> EvalResult:
             passed += 1
         else:
             failed += 1
-            failures.append(AssertionError(
+            failures.append(AssertionFailure(
                 assertion="min_findings",
                 expected=case.min_findings,
                 actual=num_findings,
@@ -181,7 +181,7 @@ def evaluate_single_case(graph, case: EvalTestCase) -> EvalResult:
             passed += 1
         else:
             failed += 1
-            failures.append(AssertionError(
+            failures.append(AssertionFailure(
                 assertion="reject_phrases",
                 expected="none of " + str(case.reject_phrases),
                 actual="found " + str(bad_phrases),
@@ -219,7 +219,7 @@ def run_eval(root: Path | str = None, cases: list[EvalTestCase] = None) -> dict:
             results.append(EvalResult(
                 test_name=case.name,
                 result=TestResult.FAIL,
-                failures=[AssertionError(
+                failures=[AssertionFailure(
                     assertion="exception",
                     expected="no exception",
                     actual=str(type(e).__name__),

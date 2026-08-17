@@ -84,12 +84,15 @@ class RuleBasedInterpreter:
                  for w in words) \
                 or any(word in text for word in ("reject", "decline", "elutasít")):
             intent = Intent.REJECT_ACTION
+        # Check AUDIT_QUERY before APPROVE_ACTION to avoid "who approved X?" being
+        # classified as approval instead of audit query
+        elif any(word in text for word in
+                 ("audit", "history", "what happened", "who approved", "who approved", "történt")):
+            intent = Intent.AUDIT_QUERY
+        # Approve must be a standalone intent, not part of "who approved" queries
         elif "approve" in text or text in ("yes", "ok", "igen", "rendben") \
                 or (action_id and "confirm" in text):
             intent = Intent.APPROVE_ACTION
-        elif any(word in text for word in
-                 ("audit", "history", "what happened", "who approved", "történt")):
-            intent = Intent.AUDIT_QUERY
         # Check KNOWLEDGE_QUESTION before REVIEW to avoid "what is a deviation?" 
         # being classified as REVIEW instead of KNOWLEDGE_QUESTION
         elif any(word in text for word in
