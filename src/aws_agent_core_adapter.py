@@ -54,8 +54,13 @@ class AWSAgentCoreAdapter:
             except Exception:
                 payload = {"message": body}
 
+            # Extract thread_id for logging and scope availability
+            thread_id = payload.get("thread_id") or "aws-thread"
+            handled_successfully = False
+
             try:
                 result = self._handle_message(payload)
+                handled_successfully = True
                 # Simple visibility: log to stdout. Deployments can replace this
                 # with SNS publishes, another queue, or storing results in S3.
                 print(json.dumps({
@@ -63,17 +68,19 @@ class AWSAgentCoreAdapter:
                     "response": result.get("response"),
                 }))
             except Exception:
-                logger.exception("handling queue message failed")
+                logger.exception("handling queue message failed for thread %s", thread_id)
 
-            # delete from queue regardless (this is a scaffold; in real
-            # systems consider dead-letter queues on failure)
-            try:
-                self.sqs.delete_message(
-                    QueueUrl=self.queue_url,
-                    ReceiptHandle=msg.get("ReceiptHandle"),
-                )
-            except Exception:
-                logger.exception("failed to delete SQS message")
+            # Only delete from queue if processing succeeded; on error, message
+            # remains visible for retry (configure AWS SQS visibility timeout
+            # and max receive count for dead-letter queue routing)
+            if handled_successfully:
+                try:
+                    self.sqs.delete_message(
+                        QueueUrl=self.queue_url,
+                        ReceiptHandle=msg.get("ReceiptHandle"),
+                    )
+                except Exception:
+                    logger.exception("failed to delete SQS message for thread %s", thread_id)
 
     def run(self) -> None:
         logger.info("starting AWSAgentCoreAdapter; polling %s", self.queue_url)

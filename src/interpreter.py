@@ -74,11 +74,15 @@ class RuleBasedInterpreter:
     def classify(self, message: str) -> IntentDecision:
         text = (message or "").strip().lower()
         subject_id, site_id, action_id = extract_ids(message or "")
+        words = text.split()
 
         if any(word in text for word in
                ("rollback", "roll back", "undo", "reverse", "visszavon")):
             intent = Intent.ROLLBACK_ACTION
-        elif any(word in text for word in ("reject", "decline", "no", "elutasít")):
+        # Check for word-boundary "no" to avoid matching "nobody", "nonstandard", etc.
+        elif any(w == "no" or w.startswith("no.") or w.startswith("no,") or w.startswith("no!") 
+                 for w in words) \
+                or any(word in text for word in ("reject", "decline", "elutasít")):
             intent = Intent.REJECT_ACTION
         elif "approve" in text or text in ("yes", "ok", "igen", "rendben") \
                 or (action_id and "confirm" in text):
@@ -86,13 +90,15 @@ class RuleBasedInterpreter:
         elif any(word in text for word in
                  ("audit", "history", "what happened", "who approved", "történt")):
             intent = Intent.AUDIT_QUERY
+        # Check KNOWLEDGE_QUESTION before REVIEW to avoid "what is a deviation?" 
+        # being classified as REVIEW instead of KNOWLEDGE_QUESTION
+        elif any(word in text for word in
+                 ("what is", "what does", "explain", "mean", "mit jelent")):
+            intent = Intent.KNOWLEDGE_QUESTION
         elif any(word in text for word in
                  ("review", "check", "assess", "deviation", "findings", "vizsgáld",
                   "ellenőriz")) or subject_id or site_id:
             intent = Intent.REVIEW
-        elif any(word in text for word in
-                 ("what is", "what does", "explain", "mean", "mit jelent")):
-            intent = Intent.KNOWLEDGE_QUESTION
         elif any(word in text for word in ("why", "how", "which", "miért")):
             intent = Intent.FOLLOW_UP
         else:

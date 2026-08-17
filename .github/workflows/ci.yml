@@ -38,3 +38,18 @@ jobs:
       - name: Run tests
         run: |
           python -m pytest -q
+
+      - name: Run evaluation harness
+        run: |
+          python scripts/eval_harness.py > eval_results.json
+          echo "Evaluation results:"
+          python -c "import json; r=json.load(open('eval_results.json')); print(f\"Passed: {r['metadata']['passed']}/{r['metadata']['total_tests']} (pass_rate: {r['metadata']['pass_rate']:.0%})\")"
+          # Fail the job if any eval test failed
+          python -c "import json, sys; r=json.load(open('eval_results.json')); sys.exit(0 if r['metadata']['failed'] == 0 else 1)"
+
+      - name: Upload evaluation results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results-py${{ matrix.python-version }}
+          path: eval_results.json
